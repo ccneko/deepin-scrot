@@ -25,6 +25,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# https://lazka.github.io/pgi-docs/Gtk-3.0/mapping.html
+
 from action import *
 from utils import *
 from math import *
@@ -116,8 +118,8 @@ class MainScrot:
         self.window.connect("destroy", self.destroy)
         #self.window.connect("expose-event", lambda w, e: self.getCurrentCoord(w))
         #self.window.connect("expose-event", self.redraw)
-        self.window.connect("button-press-event", self.buttonPress)
-        
+        self.redraw
+        self.window.connect("button-press-event", self.buttonPress)     
         self.window.connect("button-press-event", self.doubleClickRect)
         self.window.connect("button-release-event", self.buttonRelease)
         self.window.connect("motion-notify-event", self.motionNotify)
@@ -601,7 +603,7 @@ class MainScrot:
     def getInputText(self):
         '''Get input text.'''
         textBuffer = self.textView.get_buffer()
-        return (textBuffer.get_text(textBuffer.get_start_iter(), textBuffer.get_end_iter())).rstrip(" ")
+        return (textBuffer.get_text(textBuffer.get_start_iter(), textBuffer.get_end_iter(), include_hidden_chars=False)).rstrip(" ")
         
     def setActionType(self, aType):
         '''Set action. type'''
@@ -864,7 +866,7 @@ class MainScrot:
             elif self.action == ACTION_TEXT:
                 setCursor(self.window, Gdk.CursorType.XTERM)
             else:
-                self.window.window.set_cursor(None)
+                self.window.get_property('window').set_cursor(None)
                 
                 
             if self.windowFlag:
@@ -907,7 +909,7 @@ class MainScrot:
                 else:
                     self.drawTextLayoutFlag = False    
                     self.currentTextAction = None
-                    self.window.window.set_cursor(None)
+                    self.window.get_property('window').set_cursor(None)
                     self.window.queue_draw()
                             
     def buttonRelease(self, widget, event):
@@ -1120,7 +1122,7 @@ class MainScrot:
 
         
         # Exit
-        self.window.window.set_cursor(None)
+        self.window.get_property('window').set_cursor(None)
         self.destroy(self.window)
         
          # tipWindow
@@ -1285,7 +1287,7 @@ class MainScrot:
         
     def destroy(self, widget, data=None):
         '''Destroy main window.'''
-        #self.window.window.set_cursor(None)
+        #self.window.get_property('window').set_cursor(None)
         Gtk.main_quit()
         
     def getDragPointCoords(self):
@@ -1395,7 +1397,7 @@ class MainScrot:
                 del self.textActionInfo[tempAction]
                 
         else:
-            self.window.window.set_cursor(None)
+            self.window.get_property('window').set_cursor(None)
             self.action = ACTION_WINDOW
             self.x = self.y = self.rectWidth = self.rectHeight = 0
             self.windowFlag = True
@@ -1415,6 +1417,7 @@ class MainScrot:
         cr.stroke()
     def getCurrentCoord(self, widget):
         '''get Current Coord '''
+        print('test')
         (self.currentX, self.currentY) = widget.get_property('window').get_pointer()[:2] 
 
     
