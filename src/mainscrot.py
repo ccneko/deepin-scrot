@@ -1285,7 +1285,7 @@ class MainScrot:
         
     def destroy(self, widget, data=None):
         '''Destroy main window.'''
-        self.window.window.set_cursor(None)
+        #self.window.window.set_cursor(None)
         Gtk.main_quit()
         
     def getDragPointCoords(self):

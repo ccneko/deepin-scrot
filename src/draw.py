@@ -245,9 +245,9 @@ def updateShape(widget, allocation, radius):
         #pil_image = Image.frombytes('RGBA', (w, h), BytesIO(bitmap.get_pixels()).read())
         #byte_array = array.array('B', pil_image.tostring())
         print(type(bitmap.get_pixels()))
-        byte_array = bitmap.get_pixels()
+        byte_array = bytearray(bitmap.get_pixels())
+        print(type(byte_array))
         cr = cairo.ImageSurface.create_for_data(byte_array, cairo.FORMAT_ARGB32, w, h, w * 4)
-        #cr = bitmap.cairo_create()
         
         # Clear the bitmap
         cr.set_source_rgb(0.0, 0.0, 0.0)
