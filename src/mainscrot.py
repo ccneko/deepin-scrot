@@ -309,7 +309,7 @@ class MainScrot:
         self.hideColorbar()
         self.fontDialog.set_font_name(self.fontName)
         response = self.fontDialog.run()
-        if response == Gtk.RESPONSE_OK:
+        if response == Gtk.ResponseType.OK:
             self.fontName = self.fontDialog.get_font_name()
             self.fontLabel.set_label(self.fontDialog.get_font_name())
         
@@ -333,7 +333,7 @@ class MainScrot:
         self.hideToolbar()
         self.hideColorbar()
         response = self.colorDialog.run()
-        if response == Gtk.RESPONSE_OK:
+        if response == Gtk.ResponseType.OK:
             self.actionColor = gdkColorToString(colorsel.get_current_color())
             modifyBackground(self.colorBox, self.actionColor)
 
