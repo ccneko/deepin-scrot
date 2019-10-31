@@ -21,10 +21,12 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from Xlib import X, display, Xutil, Xcursorfont
-import gtk
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gdk
 from  collections import namedtuple
 
-(screenWidth, screenHeight) = gtk.gdk.get_default_root_window().get_size()
+screenWidth, screenHeight = Gdk.get_default_root_window().get_geometry()[2:]
 disp = display.Display()
 rootWindow = disp.screen().root
 WM_HINTS = disp.intern_atom("WM_HINTS", True)
@@ -125,7 +127,7 @@ def enumXlibWindow():
 
 def xlibWindowToGtkWindow(xlibWindow):
     ''' convert Xlib's window to Gtk's window '''
-    return gtk.gdk.window_foreign_new(xlibWindow.id)
+    return Gdk.window_foreign_new(xlibWindow.id)
 
 def getUsertimeWindow():
     '''Usertime Window  '''
@@ -207,14 +209,14 @@ def getScrotWindowInfo():
 
 def getScrotPixbuf(fullscreen=True):
     ''' save snapshot to file with filetype. '''
-    rootWindow = gtk.gdk.get_default_root_window() 
+    rootWindow = Gdk.get_default_root_window() 
     
     if not fullscreen:
         (x, y, width, height) = convertCoord(*getWindowCoord(getXlibPointerWindow()))
     else:
         (x, y, width, height, depth) = rootWindow.get_geometry() 
     
-    pixbuf = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, False, 8, width, height)
+    pixbuf = Gdk.Pixbuf(Gdk.COLORSPACE_RGB, False, 8, width, height)
     pixbuf.get_from_drawable(rootWindow, rootWindow.get_colormap(), x, y, 0, 0, width, height)
     return pixbuf
 

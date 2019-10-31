@@ -21,7 +21,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from utils import *
-import gobject, gtk
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk, Gdk, GObject, GdkPixbuf
 import os
 
 class DynamicPixbuf:
@@ -33,7 +35,7 @@ class DynamicPixbuf:
         
     def updatePath(self, filepath):
         '''Update path.'''
-        self.pixbuf = gtk.gdk.pixbuf_new_from_file(filepath)
+        self.pixbuf = GdkPixbuf.Pixbuf.new_from_file(filepath)
 
     def getPixbuf(self):
         '''Get pixbuf.'''

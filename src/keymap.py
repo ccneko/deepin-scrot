@@ -20,18 +20,19 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk.gdk as gdk
-import gtk.keysyms as keys
-import gtk
-import pygtk
-import gobject
-pygtk.require('2.0')
+
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk, Gdk
+#import gtk.keysyms as keys
+from gi.repository import GObject
+
 
 def getKeyName(keyval):
     '''Get key name.'''
-    keyUnicode = gdk.keyval_to_unicode(keyval)
+    keyUnicode = Gdk.keyval_to_unicode(keyval)
     if keyUnicode == 0:
-        return gdk.keyval_name(keyval)
+        return Gdk.keyval_name(keyval)
     else:
         return str(unichr(keyUnicode))
     
@@ -40,15 +41,15 @@ def getKeyEventModifiers(keyEvent):
     modifiers = []
     
     # Add Ctrl modifier.
-    if keyEvent.state & gdk.CONTROL_MASK:
+    if keyEvent.state & Gdk.CONTROL_MASK:
         modifiers.append("C")
         
     # Add Alt modifier.
-    if keyEvent.state & gdk.MOD1_MASK:
+    if keyEvent.state & Gdk.MOD1_MASK:
         modifiers.append("M")
         
     # Don't need add Shift modifier if keyval is upper character.
-    if keyEvent.state & gdk.SHIFT_MASK and not gdk.keyval_is_upper(keyEvent.keyval):
+    if keyEvent.state & Gdk.SHIFT_MASK and not Gdk.keyval_is_upper(keyEvent.keyval):
         modifiers.append("S")
         
     return modifiers

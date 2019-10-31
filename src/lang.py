@@ -25,7 +25,7 @@
 import gettext
 import locale
 
-DEFAULT_LANG = None
+DEFAULT_LANG = 'en_US'
 #DEFAULT_LANG = "default"
 #DEFAULT_LANG = "zh_CN"
 #DEFAULT_LANG = "zh_TW"

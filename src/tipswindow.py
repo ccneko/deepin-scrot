@@ -23,7 +23,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-import gtk
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk, Gdk
 from draw import *
 import sys
 
@@ -31,18 +33,18 @@ class tipWindow():
     ''' tip window'''
     def __init__(self, content):
         ''' Init tip Window'''
-        screenWidth, screenHeight = gtk.gdk.get_default_root_window().get_size()
+        screenWidth, screenHeight = Gdk.get_default_root_window().get_size()
         self.delta = 0.01
         self.alpha = 1
         self.paddingX = 10
         self.content = content
         
-        self.tipWindow = gtk.Window(gtk.WINDOW_TOPLEVEL)
+        self.tipWindow = Gtk.Window(Gtk.WINDOW_TOPLEVEL)
         self.tipWindow.set_keep_above(True)
         self.tipWindow.set_size_request(-1, -1)
         self.tipWindow.set_decorated(False)
         self.tipWindow.set_accept_focus(False)
-        self.tipWindow.modify_fg(gtk.STATE_NORMAL, gtk.gdk.color_parse("black"))
+        self.tipWindow.modify_fg(Gtk.STATE_NORMAL, Gdk.color_parse("black"))
         self.tipWindow.set_icon_from_file("../theme/logo/deepin-scrot.ico")
         self.tipWindow.set_opacity(1)
         self.tipWindow.set_skip_taskbar_hint(True)
@@ -55,10 +57,10 @@ class tipWindow():
         self.tipWindow.connect("size-allocate", lambda w, a: updateShape(w, a, 4))
         
         # Create tooltips label.
-        self.label = gtk.Label()
+        self.label = Gtk.Label()
         self.label.set_markup("<span foreground='#00AEFF' size='12000'>%s</span>" % (content))
         self.label.set_single_line_mode(True) # just one line
-        self.align = gtk.Alignment()
+        self.align = Gtk.Alignment()
         self.align.set(0.5, 0.5, 0, 0)
         self.align.set_padding(5, 5, self.paddingX, self.paddingX)
         self.align.add(self.label)
@@ -66,7 +68,7 @@ class tipWindow():
         glib.timeout_add(50, lambda : self.timeoutHandler(self.tipWindow))
         self.tipWindow.show_all()
         
-        gtk.main()
+        Gtk.main()
     
     def tipExpose(self, widget, event, data=None):
         self.alpha -= self.delta
@@ -89,7 +91,7 @@ class tipWindow():
         
     def timeoutHandler(self, widget):
         if self.getAlpha() <= 0:
-            gtk.main_quit()
+            Gtk.main_quit()
             return False
         widget.queue_draw()
         return True
@@ -99,17 +101,17 @@ class countdownWindow():
     '''  show a countdown before taking the shot'''
     def __init__(self, count):
         ''' Init tip Window'''
-        screenWidth, screenHeight = gtk.gdk.get_default_root_window().get_size()
+        screenWidth, screenHeight = Gdk.get_default_root_window().get_size()
         self.count = count
         self.paddingX = 10
         
-        self.tipWindow = gtk.Window(gtk.WINDOW_TOPLEVEL)
+        self.tipWindow = Gtk.Window(Gtk.WINDOW_TOPLEVEL)
         self.tipWindow.set_skip_taskbar_hint(True)
         self.tipWindow.set_skip_pager_hint(True)
         self.tipWindow.set_keep_above(True)
         self.tipWindow.set_size_request(100, 100)
         self.tipWindow.set_decorated(False)
-        self.tipWindow.modify_fg(gtk.STATE_NORMAL, gtk.gdk.color_parse("black"))
+        self.tipWindow.modify_fg(Gtk.STATE_NORMAL, Gdk.color_parse("black"))
         self.tipWindow.set_accept_focus(False)
         self.tipWindow.set_icon_from_file("../theme/logo/deepin-scrot.ico")
         self.tipWindow.set_opacity(0.8)
@@ -118,10 +120,10 @@ class countdownWindow():
         self.tipWindow.connect("size-allocate", lambda w, a: updateShape(w, a, 4))
         
         # Create tooltips label.
-        self.label = gtk.Label()
+        self.label = Gtk.Label()
         self.label.set_markup("<span foreground='#00AEFF' size='36000'>%d</span>" % (self.count))
         self.label.set_single_line_mode(True) # just one line
-        self.align = gtk.Alignment()
+        self.align = Gtk.Alignment()
         self.align.set(0.5, 0.5, 1.0, 1.0)
         self.align.set_padding(0, 28, self.paddingX, self.paddingX)
         self.align.add(self.label)
@@ -129,7 +131,7 @@ class countdownWindow():
         glib.timeout_add(1000, lambda : self.timeoutHandler(self.tipWindow))
         self.tipWindow.show_all()
         
-        gtk.main()
+        Gtk.main()
     
     def tipExpose(self, widget, event, data=None):
         self.label.set_markup("<span foreground='#00AEFF' size='36000'>%d</span>" % (self.count))
@@ -150,7 +152,7 @@ class countdownWindow():
         if self.count == 1:
             self.tipWindow.hide_all()
         elif self.count <= 0:
-            gtk.main_quit()
+            Gtk.main_quit()
             return False   
         else:
             pass

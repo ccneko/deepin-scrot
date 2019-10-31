@@ -21,7 +21,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # locale
-import gtk, os, sys, time
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
+import os, sys, time
 from mainscrot import MainScrot
 from window import getScrotPixbuf
 from optparse import OptionParser
@@ -33,16 +36,16 @@ saveFiletype = "png"
 def openFileDialog(fullscreen=True, filetype='png'):
     '''Save file to file.'''
     pixbuf = getScrotPixbuf(fullscreen)
-    dialog = gtk.FileChooserDialog(
+    dialog = Gtk.FileChooserDialog(
                                    "Save..",
                                    None,
-                                   gtk.FILE_CHOOSER_ACTION_SAVE,
-                                   (gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
-                                    gtk.STOCK_SAVE, gtk.RESPONSE_ACCEPT))
+                                   Gtk.FILE_CHOOSER_ACTION_SAVE,
+                                   (Gtk.STOCK_CANCEL, Gtk.RESPONSE_REJECT,
+                                    Gtk.STOCK_SAVE, Gtk.RESPONSE_ACCEPT))
         
 
-    dialog.set_default_response(gtk.RESPONSE_ACCEPT)
-    dialog.set_position(gtk.WIN_POS_CENTER)
+    dialog.set_default_response(Gtk.RESPONSE_ACCEPT)
+    dialog.set_position(Gtk.WIN_POS_CENTER)
     dialog.set_local_only(True)
         
     
@@ -52,9 +55,9 @@ def openFileDialog(fullscreen=True, filetype='png'):
        
         
 
-    optionMenu = gtk.OptionMenu()
+    optionMenu = Gtk.OptionMenu()
     optionMenu.set_size_request(155, -1)
-    menu = gtk.Menu()
+    menu = Gtk.Menu()
     menu.set_size_request(155, -1)
     
     pngItem = makeMenuItem('PNG (*.png)',
@@ -75,19 +78,19 @@ def openFileDialog(fullscreen=True, filetype='png'):
     optionMenu.set_menu(menu)
     
     
-    hbox = gtk.HBox()
+    hbox = Gtk.HBox()
     hbox.pack_end(optionMenu, False, False)
     dialog.vbox.pack_start(hbox, False, False)
     hbox.show_all()                          
             
     response = dialog.run()
         
-    if response == gtk.RESPONSE_ACCEPT:
+    if response == Gtk.RESPONSE_ACCEPT:
         filename = dialog.get_filename()
         pixbuf.save(filename, filetype)
-        print "Save snapshot to %s" % (filename)
-    elif response == gtk.RESPONSE_REJECT:
-        print 'Closed, no files selected'
+        print("Save snapshot to %s" % (filename))
+    elif response == Gtk.RESPONSE_REJECT:
+        print('Closed, no files selected')
     dialog.destroy()
 
 def setSaveFiletype(widget, filetype):

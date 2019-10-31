@@ -24,8 +24,7 @@
 from math import *
 from draw import *
 from constant import *
-import pango
-import pangocairo
+from gi.repository import Pango, PangoCairo
 
 class Action:
     '''Action'''
@@ -38,13 +37,16 @@ class Action:
         self.startX = self.endX = self.startY = self.endY = None
         self.track = []
         
-    def startDraw(self, (sx, sy)):
+    def startDraw(self, sxsy):
         '''Start draw.'''
+        sx, sy = sxsy
         self.startX = sx
         self.startY = sy
         
-    def endDraw(self, (ex, ey), (rx, ry, rw, rh)):
+    def endDraw(self, exey, rxywh):
         '''End draw.'''
+        ex, ey = exey
+        rx, ry, rw, rh = rxywh
         self.endX = min((max(ex, rx)), rx + rw)
         self.endY = min((max(ey, ry)), ry + rh)
     
@@ -55,8 +57,10 @@ class RectangleAction(Action):
         '''Rectangle action.'''
         Action.__init__(self, aType, size, color)
         
-    def drawing(self, (ex, ey), (rx, ry, rw, rh)):
+    def drawing(self, exey, rxywh):
         '''Drawing.'''
+        ex, ey = exey
+        rx, ry, rw, rh = rxywh        
         self.endX = min((max(ex, rx)), rx + rw)
         self.endY = min((max(ey, ry)), ry + rh)
         
@@ -78,8 +82,10 @@ class EllipseAction(Action):
         '''Ellipse action.'''
         Action.__init__(self, aType, size, color)
         
-    def drawing(self, (ex, ey), (rx, ry, rw, rh)):
+    def drawing(self, exey, rxywh):
         '''Drawing.'''
+        ex, ey = exey
+        rx, ry, rw, rh = rxywh
         self.endX = min((max(ex, rx)), rx + rw)
         self.endY = min((max(ey, ry)), ry + rh)
         
@@ -102,8 +108,10 @@ class ArrowAction(Action):
         '''Arrow action.'''
         Action.__init__(self, aType, size, color)
         
-    def drawing(self, (ex, ey), (rx, ry, rw, rh)):
+    def drawing(self, exey, rxywh):
         '''Drawing.'''
+        ex, ey = exey
+        rx, ry, rw, rh = rxywh
         self.endX = min((max(ex, rx)), rx + rw)
         self.endY = min((max(ey, ry)), ry + rh)
         
@@ -123,8 +131,10 @@ class LineAction(Action):
         '''Line action.'''
         Action.__init__(self, aType, size, color)
         
-    def drawing(self, (ex, ey), (rx, ry, rw, rh)):
+    def drawing(self, exey, rxywh):
         '''Drawing.'''
+        ex, ey = exey
+        rx, ry, rw, rh = rxywh
         newX = min((max(ex, rx)), rx + rw)
         newY = min((max(ey, ry)), ry + rh)
         self.endX = newX
@@ -163,9 +173,9 @@ class TextAction(Action):
         '''Expose.'''
 
         cr.move_to(self.startX, self.startY)
-        context = pangocairo.CairoContext(cr)
+        context = Pangocairo.CairoContext(cr)
         self.layout = context.create_layout()
-        self.layout.set_font_description(pango.FontDescription(self.fontname))
+        self.layout.set_font_description(Pango.FontDescription(self.fontname))
         self.layout.set_text(self.content)
         cr.set_source_rgb(*colorHexToCairo(self.color))
         context.update_layout(self.layout)
@@ -186,8 +196,8 @@ class TextAction(Action):
     def getLayoutInfo(self):
         ''' get layout (x, y, width, height) '''
         return (self.startX, self.startY, 
-                self.layout.get_size()[0] / pango.SCALE,
-                self.layout.get_size()[1] / pango.SCALE)
+                self.layout.get_size()[0] / Pango.SCALE,
+                self.layout.get_size()[1] / Pango.SCALE)
 
     def getContent(self):
         '''get Content '''

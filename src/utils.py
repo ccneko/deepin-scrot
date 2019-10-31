@@ -20,21 +20,25 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
-import pygtk
-import gobject
-import pangocairo
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk, Gdk, GObject
+gi.require_version('PangoCairo', '1.0')
+from gi.repository import PangoCairo
 import sys
 import time
 
-pygtk.require('2.0')
 
-def isCollideRect((cx, cy), (x, y, w, h)):
+def isCollideRect(cxcy, xywh):
     '''Whether coordinate collide with rectangle.'''
+    cx, cy = cxcy
+    x, y, w, h = xywh
     return (x <= cx <= x + w and y <= cy <= y + h)
 
-def isInRect((cx, cy), (x, y, w, h)):
+def isInRect(cxcy, xywh):
     '''Whether coordinate in rectangle.'''
+    cx, cy = cxcy
+    x, y, w, h = xywh
     return (x < cx < x + w and y < cy < y + h)
 
 def setClickableCursor(widget):
@@ -42,7 +46,7 @@ def setClickableCursor(widget):
     # Use widget in lambda, and not widget pass in function.
     # Otherwise, if widget free before callback, you will got error:
     # free variable referenced before assignment in enclosing scope, 
-    widget.connect("enter-notify-event", lambda w, e: setCursor(w, gtk.gdk.HAND2))
+    widget.connect("enter-notify-event", lambda w, e: setCursor(w, Gdk.HAND2))
     widget.connect("leave-notify-event", lambda w, e: setDefaultCursor(w))
 
 def setDefaultCursor(widget):
@@ -53,21 +57,21 @@ def setDefaultCursor(widget):
 
 def setCursor(widget, cursorType):
     '''Set cursor.'''
-    widget.window.set_cursor(gtk.gdk.Cursor(cursorType))
+    widget.window.set_cursor(Gdk.Cursor(cursorType))
     
     return False
 
 def getScreenSize():
     '''Get screen size.'''
-    return gtk.gdk.get_default_root_window().get_size()
+    return Gdk.get_default_root_window().get_size()
 
 def isDoubleClick(event):
     '''Whether an event is double click?'''
-    return event.button == 1 and event.type == gtk.gdk._2BUTTON_PRESS
+    return event.button == 1 and event.type == Gdk._2BUTTON_PRESS
 
 def getFontFamilies():
     '''Get all font families in system.'''
-    fontmap = pangocairo.cairo_font_map_get_default()
+    fontmap = Pangocairo.cairo_font_map_get_default()
     return map(lambda f: f.get_name(), fontmap.list_families())
 
 def setHelpTooltip(widget, helpText):
@@ -84,7 +88,7 @@ def showHelpTooltip(widget, helpText):
 
 def modifyBackground(widget, color):
     ''' modify widget background'''
-    widget.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse(color))
+    widget.modify_bg(Gtk.STATE_NORMAL, Gdk.color_parse(color))
 
 def gdkColorToString(gdkcolor):
     '''gdkColor to string '''
@@ -97,7 +101,7 @@ def getCoordRGB(widget, x, y):
     '''get coordinate's pixel. '''
     width, height = widget.get_size()
     colormap = widget.get_window().get_colormap()
-    image = gtk.gdk.Image(gtk.gdk.IMAGE_NORMAL, widget.window.get_visual(), width, height)
+    image = Gdk.Image(Gdk.IMAGE_NORMAL, widget.window.get_visual(), width, height)
     image.set_colormap(colormap)
     gdkcolor =  colormap.query_color(image.get_pixel(x, y))
     return (gdkcolor.red / 256, gdkcolor.green / 256, gdkcolor.blue / 256)
@@ -108,7 +112,7 @@ def containerRemoveAll(container):
 
 
 def makeMenuItem(name, callback, data=None):
-    item = gtk.MenuItem(name)
+    item = Gtk.MenuItem(name)
     item.connect("activate", callback, data)
     item.show()
     return item

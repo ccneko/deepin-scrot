@@ -26,12 +26,13 @@ from utils import *
 import sys
 from constant import DEFAULT_FONT
 import cairo
-import gtk
-import pygtk
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
 import glib
 from window import screenWidth, screenHeight
 
-pygtk.require('2.0')
+
 
 def drawPixbuf(cr, pixbuf, x=0, y=0):
     '''Draw pixbuf.'''
@@ -76,11 +77,11 @@ def drawSimpleButton(widget, img, helpText = None):
 
 def simpleButtonOnExpose(widget, event, img):
     '''Expose function to replace event box's image.'''
-    if widget.state == gtk.STATE_NORMAL:
+    if widget.state == Gtk.STATE_NORMAL:
         pixbuf = appTheme.getDynamicPixbuf(img + "_normal.png").getPixbuf()
-    elif widget.state == gtk.STATE_PRELIGHT:
+    elif widget.state == Gtk.STATE_PRELIGHT:
         pixbuf = appTheme.getDynamicPixbuf(img + "_hover.png").getPixbuf()
-    elif widget.state == gtk.STATE_ACTIVE:
+    elif widget.state == Gtk.STATE_ACTIVE:
         pixbuf = appTheme.getDynamicPixbuf(img + "_press.png").getPixbuf()
     
     cr = widget.window.cairo_create()
@@ -102,14 +103,14 @@ def drawSizeButton(widget, img, index, getIndex):
 
 def SizeButtonOnExpose(widget, event, img, index, getIndex):
     '''Expose function to replace event box's image.'''
-    if widget.state == gtk.STATE_NORMAL:
+    if widget.state == Gtk.STATE_NORMAL:
         if getIndex() == index:
             pixbuf = appTheme.getDynamicPixbuf(img + "_press.png").getPixbuf()
         else:
             pixbuf = appTheme.getDynamicPixbuf(img + ".png").getPixbuf()
-    elif widget.state == gtk.STATE_PRELIGHT:
+    elif widget.state == Gtk.STATE_PRELIGHT:
         pixbuf = appTheme.getDynamicPixbuf(img + "_hover.png").getPixbuf()
-    elif widget.state == gtk.STATE_ACTIVE:
+    elif widget.state == Gtk.STATE_ACTIVE:
         pixbuf = appTheme.getDynamicPixbuf(img + "_press.png").getPixbuf()
         
     
@@ -135,11 +136,11 @@ def drawColorButton(widget, img, helpText = None):
 
 def simpleColorOnExpose(widget, event, img):
     '''Expose function to replace event box's image.'''
-    if widget.state == gtk.STATE_NORMAL:
+    if widget.state == Gtk.STATE_NORMAL:
         pixbuf = appTheme.getDynamicPixbuf(img + ".png").getPixbuf()
-    elif widget.state == gtk.STATE_PRELIGHT:
+    elif widget.state == Gtk.STATE_PRELIGHT:
         pixbuf = appTheme.getDynamicPixbuf(img + "_hover.png").getPixbuf()
-    elif widget.state == gtk.STATE_ACTIVE:
+    elif widget.state == Gtk.STATE_ACTIVE:
         pixbuf = appTheme.getDynamicPixbuf(img + "_hover.png").getPixbuf()
     
     cr = widget.window.cairo_create()
@@ -185,8 +186,10 @@ def drawEllipse(cr, ex, ey, ew, eh, color, size):
     cr.stroke()
     
 
-def drawArrow(cr, (sx, sy), (ex, ey), color, size):
+def drawArrow(cr, sxsy, exey, color, size):
     '''Draw arrow.'''
+    sx, sy = sxsy
+    ex, ey = exey
     # Init.
     arrowSize = 10              # in pixel
     arrowAngle = 10             # in degree
@@ -231,7 +234,7 @@ def updateShape(widget, allocation, radius):
     if allocation.width > 0 and allocation.height > 0:
         # Init.
         w, h = allocation.width, allocation.height
-        bitmap = gtk.gdk.Pixmap(None, w, h, 1)
+        bitmap = Gtk.gdk.Pixmap(None, w, h, 1)
         cr = bitmap.cairo_create()
         
         # Clear the bitmap
@@ -271,7 +274,7 @@ def exposeBackground(widget, event, dPixbuf):
     cr = widget.window.cairo_create()
     rect = widget.allocation
 
-    drawPixbuf(cr, dPixbuf.getPixbuf().scale_simple(rect.width, rect.height, gtk.gdk.INTERP_BILINEAR), rect.x, rect.y)
+    drawPixbuf(cr, dPixbuf.getPixbuf().scale_simple(rect.width, rect.height, Gtk.gdk.INTERP_BILINEAR), rect.x, rect.y)
     
     if widget.get_child() != None:
         widget.propagate_expose(widget.get_child(), event)
@@ -317,7 +320,7 @@ def drawFont(cr, content, fontSize, fontColor, x, y):
 def setPixbufCursor(widget, cursorName):
     pixbuf = appTheme.getDynamicPixbuf(cursorName).getPixbuf()
     display = widget.window.get_display()
-    widget.window.set_cursor(gtk.gdk.Cursor(display, pixbuf, 0, 0))
+    widget.window.set_cursor(Gtk.gdk.Cursor(display, pixbuf, 0, 0))
 
 
 def drawMagnifier(cr, widget, x, y, sizeContent, tipContent = "", rgbContent = "RGB:(255,255,255)"):
@@ -335,7 +338,7 @@ def drawMagnifier(cr, widget, x, y, sizeContent, tipContent = "", rgbContent = "
     else:
         offsetX = 3
 
-    pixbuf = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, False, 8, pixbufWidth, pixbufHeight)
+    pixbuf = Gtk.gdk.Pixbuf(Gtk.gdk.COLORSPACE_RGB, False, 8, pixbufWidth, pixbufHeight)
     pixbuf.get_from_drawable(widget.get_window(), widget.get_window().get_colormap(),
             int(fabs(x - pixbufWidth / 2)), int(fabs(y - pixbufHeight / 2)),
             0, 0,
@@ -414,10 +417,10 @@ def drawTitlebarOnExpose(widget, event, bgLeftDPixbuf,
     mOffsetX = rect.x + bgLeftPixbuf.get_width()
     mWidth =  rect.width - bgLeftPixbuf.get_width() - bgRightPixbuf.get_width()
     rOffsetX = mOffsetX + mWidth
-    bgLeftPixbuf = bgLeftPixbuf.scale_simple(bgLeftPixbuf.get_width(), rect.height, gtk.gdk.INTERP_BILINEAR)
-    bgRightPixbuf = bgRightPixbuf.scale_simple(bgRightPixbuf.get_width(), rect.height, gtk.gdk.INTERP_BILINEAR)
+    bgLeftPixbuf = bgLeftPixbuf.scale_simple(bgLeftPixbuf.get_width(), rect.height, Gtk.gdk.INTERP_BILINEAR)
+    bgRightPixbuf = bgRightPixbuf.scale_simple(bgRightPixbuf.get_width(), rect.height, Gtk.gdk.INTERP_BILINEAR)
     drawPixbuf(cr, bgLeftPixbuf, rect.x, rect.y)
-    bmPixbuf = bgMiddlePixbuf.scale_simple(mWidth, rect.height, gtk.gdk.INTERP_BILINEAR)
+    bmPixbuf = bgMiddlePixbuf.scale_simple(mWidth, rect.height, Gtk.gdk.INTERP_BILINEAR)
     drawPixbuf(cr, bmPixbuf, mOffsetX, rect.y)
     drawPixbuf(cr, bgRightPixbuf, rOffsetX, rect.y)
 
@@ -456,11 +459,11 @@ def buttonSetBackground(widget, scaleX, scaleY, normalDPixbuf, hoverDPixbuf, pre
 
 def buttonOnExpose(widget, event, scaleX, scaleY, normalDPixbuf, hoverDPixbuf, pressDPixbuf):
     ''' Expose function to replace event box's image. '''
-    if widget.state == gtk.STATE_NORMAL:
+    if widget.state == Gtk.STATE_NORMAL:
         image = normalDPixbuf.getPixbuf()
-    elif widget.state == gtk.STATE_PRELIGHT:
+    elif widget.state == Gtk.STATE_PRELIGHT:
         image = hoverDPixbuf.getPixbuf()
-    elif widget.state == gtk.STATE_ACTIVE:
+    elif widget.state == Gtk.STATE_ACTIVE:
         image = pressDPixbuf.getPixbuf()
         
     if scaleX:
@@ -474,7 +477,7 @@ def buttonOnExpose(widget, event, scaleX, scaleY, normalDPixbuf, hoverDPixbuf, p
         imageHeight = image.get_height()
         
     
-    pixbuf = image.scale_simple(imageWidth, imageHeight, gtk.gdk.INTERP_BILINEAR)
+    pixbuf = image.scale_simple(imageWidth, imageHeight, Gtk.gdk.INTERP_BILINEAR)
     
     cr = widget.window.cairo_create()
     drawPixbuf(cr, pixbuf, widget.allocation.x, widget.allocation.y)
