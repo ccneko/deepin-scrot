@@ -1093,10 +1093,10 @@ class MainScrot:
         
         # Draw action list.
         for action in self.actionList:
-            action.expose(cr)
+            action.draw(cr)
         # Draw text Action list.
         for eachTextAction in self.textActionList:
-            eachTextAction.expose(cr)
+            eachTextAction.draw(cr)
             
         # Get snapshot.
         pixbuf = GdkPixbuf(GdkPixbuf.Colorspace.RGB, False, 8, int(self.rectWidth), int(self.rectHeight))
@@ -1149,16 +1149,17 @@ class MainScrot:
         # Draw action list.
         for action in self.actionList:
             if action != None:
-                action.expose(cr)
+                print('action')
+                action.draw(cr) # from expose
         
         # Draw Text Action list.
         for eachTextAction in self.textActionList:
-            eachTextAction.expose(cr)
+            eachTextAction.draw(cr)
             self.textActionInfo[eachTextAction] = eachTextAction.getLayoutInfo()
 
         # Draw current action.
         if self.currentAction != None:
-            self.currentAction.expose(cr)
+            self.currentAction.draw(cr)
         
 
         # draw currentText layout
@@ -1184,7 +1185,8 @@ class MainScrot:
             
         
         if widget.get_child() != None:
-            widget.propagate_expose(widget.get_child(), event)
+            print('hi')
+            widget.propagate_draw(widget.get_child(), event)
     
         return True
     
