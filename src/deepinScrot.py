@@ -39,12 +39,12 @@ def openFileDialog(fullscreen=True, filetype='png'):
     dialog = Gtk.FileChooserDialog(
                                    "Save..",
                                    None,
-                                   Gtk.FILE_CHOOSER_ACTION_SAVE,
-                                   (Gtk.STOCK_CANCEL, Gtk.RESPONSE_REJECT,
-                                    Gtk.STOCK_SAVE, Gtk.RESPONSE_ACCEPT))
+                                   Gtk.FileChooserAction.SAVE,
+                                   (Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT,
+                                    Gtk.STOCK_SAVE, Gtk.ResponseType.ACCEPT))
         
 
-    dialog.set_default_response(Gtk.RESPONSE_ACCEPT)
+    dialog.set_default_response(Gtk.ResponseType.ACCEPT)
     dialog.set_position(Gtk.WIN_POS_CENTER)
     dialog.set_local_only(True)
         
@@ -85,11 +85,11 @@ def openFileDialog(fullscreen=True, filetype='png'):
             
     response = dialog.run()
         
-    if response == Gtk.RESPONSE_ACCEPT:
+    if response == Gtk.ResponseType.ACCEPT:
         filename = dialog.get_filename()
         pixbuf.save(filename, filetype)
         print("Save snapshot to %s" % (filename))
-    elif response == Gtk.RESPONSE_REJECT:
+    elif response == Gtk.ResponseType.REJECT:
         print('Closed, no files selected')
     dialog.destroy()
 
