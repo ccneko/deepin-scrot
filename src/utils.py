@@ -46,7 +46,7 @@ def setClickableCursor(widget):
     # Use widget in lambda, and not widget pass in function.
     # Otherwise, if widget free before callback, you will got error:
     # free variable referenced before assignment in enclosing scope, 
-    widget.connect("enter-notify-event", lambda w, e: setCursor(w, Gdk.HAND2))
+    widget.connect("enter-notify-event", lambda w, e: setCursor(w, Gdk.CursorType.HAND2))
     widget.connect("leave-notify-event", lambda w, e: setDefaultCursor(w))
 
 def setDefaultCursor(widget):
