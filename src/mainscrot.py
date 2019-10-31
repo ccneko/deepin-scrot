@@ -437,7 +437,7 @@ class MainScrot:
         self.actionCancelButton.connect("button-press-event", lambda w, e: self.destroy(self.window))
 
         self.actionFinishButton = self.createOtherButton("finish",__("Tip finish"))
-        self.actionFinishButton.connect("button-press-event", lambda w, e: self.saveSnapshot())
+        self.actionFinishButton.connect("button-press-event", lambda w, e: self.saveSnapshot)
       
       
     def setOtherInactive(self, button):
