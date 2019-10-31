@@ -26,6 +26,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # https://lazka.github.io/pgi-docs/Gtk-3.0/mapping.html
+# Gtk.Widget.queue_draw(), Gtk.Widget.queue_draw_area()
 
 from action import *
 from utils import *
