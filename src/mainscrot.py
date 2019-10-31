@@ -1345,23 +1345,23 @@ class MainScrot:
         if position == DRAG_INSIDE:
             setCursor(self.window, Gdk.FLEUR)
         elif position == DRAG_OUTSIDE:
-            setCursor(self.window, Gdk.TOP_LEFT_ARROW)
+            setCursor(self.window, Gdk.CursorType.TOP_LEFT_ARROW)
         elif position == DRAG_TOP_LEFT_CORNER:
-            setCursor(self.window, Gdk.TOP_LEFT_CORNER)
+            setCursor(self.window, Gdk.CursorType.TOP_LEFT_CORNER)
         elif position == DRAG_TOP_RIGHT_CORNER:
-            setCursor(self.window, Gdk.TOP_RIGHT_CORNER)
+            setCursor(self.window, Gdk.CursorType.TOP_RIGHT_CORNER)
         elif position == DRAG_BOTTOM_LEFT_CORNER:
-            setCursor(self.window, Gdk.BOTTOM_LEFT_CORNER)
+            setCursor(self.window, Gdk.CursorType.BOTTOM_LEFT_CORNER)
         elif position == DRAG_BOTTOM_RIGHT_CORNER:
-            setCursor(self.window, Gdk.BOTTOM_RIGHT_CORNER)
+            setCursor(self.window, Gdk.CursorType.BOTTOM_RIGHT_CORNER)
         elif position == DRAG_TOP_SIDE:
-            setCursor(self.window, Gdk.TOP_SIDE)
+            setCursor(self.window, Gdk.CursorType.TOP_SIDE)
         elif position == DRAG_BOTTOM_SIDE:
-            setCursor(self.window, Gdk.BOTTOM_SIDE)
+            setCursor(self.window, Gdk.CursorType.BOTTOM_SIDE)
         elif position == DRAG_LEFT_SIDE:
-            setCursor(self.window, Gdk.LEFT_SIDE)
+            setCursor(self.window, Gdk.CursorType.LEFT_SIDE)
         elif position == DRAG_RIGHT_SIDE:
-            setCursor(self.window, Gdk.RIGHT_SIDE)
+            setCursor(self.window, Gdk.CursorType.RIGHT_SIDE)
             
     def dragFrameTop(self, ex, ey):
         '''Drag frame top.'''

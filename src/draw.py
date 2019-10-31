@@ -77,11 +77,11 @@ def drawSimpleButton(widget, img, helpText = None):
 
 def simpleButtonOnExpose(widget, event, img):
     '''Expose function to replace event box's image.'''
-    if widget.state == Gtk.STATE_NORMAL:
+    if widget.state == Gtk.StateType.NORMAL:
         pixbuf = appTheme.getDynamicPixbuf(img + "_normal.png").getPixbuf()
-    elif widget.state == Gtk.STATE_PRELIGHT:
+    elif widget.state == Gtk.StateType.PRELIGHT:
         pixbuf = appTheme.getDynamicPixbuf(img + "_hover.png").getPixbuf()
-    elif widget.state == Gtk.STATE_ACTIVE:
+    elif widget.state == Gtk.StateType.ACTIVE:
         pixbuf = appTheme.getDynamicPixbuf(img + "_press.png").getPixbuf()
     
     cr = widget.window.cairo_create()
@@ -103,14 +103,14 @@ def drawSizeButton(widget, img, index, getIndex):
 
 def SizeButtonOnExpose(widget, event, img, index, getIndex):
     '''Expose function to replace event box's image.'''
-    if widget.state == Gtk.STATE_NORMAL:
+    if widget.state == Gtk.StateType.NORMAL:
         if getIndex() == index:
             pixbuf = appTheme.getDynamicPixbuf(img + "_press.png").getPixbuf()
         else:
             pixbuf = appTheme.getDynamicPixbuf(img + ".png").getPixbuf()
-    elif widget.state == Gtk.STATE_PRELIGHT:
+    elif widget.state == Gtk.StateType.PRELIGHT:
         pixbuf = appTheme.getDynamicPixbuf(img + "_hover.png").getPixbuf()
-    elif widget.state == Gtk.STATE_ACTIVE:
+    elif widget.state == Gtk.StateType.ACTIVE:
         pixbuf = appTheme.getDynamicPixbuf(img + "_press.png").getPixbuf()
         
     
@@ -136,11 +136,11 @@ def drawColorButton(widget, img, helpText = None):
 
 def simpleColorOnExpose(widget, event, img):
     '''Expose function to replace event box's image.'''
-    if widget.state == Gtk.STATE_NORMAL:
+    if widget.state == Gtk.StateType.NORMAL:
         pixbuf = appTheme.getDynamicPixbuf(img + ".png").getPixbuf()
-    elif widget.state == Gtk.STATE_PRELIGHT:
+    elif widget.state == Gtk.StateType.PRELIGHT:
         pixbuf = appTheme.getDynamicPixbuf(img + "_hover.png").getPixbuf()
-    elif widget.state == Gtk.STATE_ACTIVE:
+    elif widget.state == Gtk.StateType.ACTIVE:
         pixbuf = appTheme.getDynamicPixbuf(img + "_hover.png").getPixbuf()
     
     cr = widget.window.cairo_create()
@@ -459,11 +459,11 @@ def buttonSetBackground(widget, scaleX, scaleY, normalDPixbuf, hoverDPixbuf, pre
 
 def buttonOnExpose(widget, event, scaleX, scaleY, normalDPixbuf, hoverDPixbuf, pressDPixbuf):
     ''' Expose function to replace event box's image. '''
-    if widget.state == Gtk.STATE_NORMAL:
+    if widget.state == Gtk.StateType.NORMAL:
         image = normalDPixbuf.getPixbuf()
-    elif widget.state == Gtk.STATE_PRELIGHT:
+    elif widget.state == Gtk.StateType.PRELIGHT:
         image = hoverDPixbuf.getPixbuf()
-    elif widget.state == Gtk.STATE_ACTIVE:
+    elif widget.state == Gtk.StateType.ACTIVE:
         image = pressDPixbuf.getPixbuf()
         
     if scaleX:
