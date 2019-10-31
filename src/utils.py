@@ -88,7 +88,7 @@ def showHelpTooltip(widget, helpText):
 
 def modifyBackground(widget, color):
     ''' modify widget background'''
-    widget.modify_bg(Gtk.STATE_NORMAL, Gdk.color_parse(color))
+    widget.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse(color))
 
 def gdkColorToString(gdkcolor):
     '''gdkColor to string '''
@@ -101,7 +101,7 @@ def getCoordRGB(widget, x, y):
     '''get coordinate's pixel. '''
     width, height = widget.get_size()
     colormap = widget.get_window().get_colormap()
-    image = Gdk.Image(Gdk.IMAGE_NORMAL, widget.get_property('window').get_visual(), width, height)
+    image = Gdk.Image(Gdk.ImageType.NORMAL, widget.get_property('window').get_visual(), width, height)
     image.set_colormap(colormap)
     gdkcolor =  colormap.query_color(image.get_pixel(x, y))
     return (gdkcolor.red / 256, gdkcolor.green / 256, gdkcolor.blue / 256)
