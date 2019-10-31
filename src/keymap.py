@@ -34,7 +34,7 @@ def getKeyName(keyval):
     if keyUnicode == 0:
         return Gdk.keyval_name(keyval)
     else:
-        return str(unichr(keyUnicode))
+        return str(chr(keyUnicode))
     
 def getKeyEventModifiers(keyEvent):
     '''Get key event modifiers.'''

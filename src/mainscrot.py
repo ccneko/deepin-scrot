@@ -1003,13 +1003,13 @@ class MainScrot:
 
     def unregisterKeyBinding(self, keyEventName):
         '''Unregister a keybinding'''
-        if self.keyBindings.has_key(keyEventName):
+        if keyEventName in self.keyBindings:
             del self.keyBindings[keyEventName]
             
     def keyPress(self, widget, event):
         '''process key press event'''
         keyEventName = getKeyEventName(event)
-        if self.keyBindings.has_key(keyEventName):
+        if keyEventName in self.keyBindings:
             self.keyBindings[keyEventName]()
 
     def saveSnapshotToFile(self):
