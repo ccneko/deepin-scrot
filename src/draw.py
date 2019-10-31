@@ -69,7 +69,7 @@ def drawSimpleButton(widget, img, helpText = None):
     '''Draw simple button.'''
     pixbuf = appTheme.getDynamicPixbuf(img + "_normal.png").getPixbuf()
     widget.set_size_request(pixbuf.get_width(), pixbuf.get_height())
-    widget.connect("expose-event", lambda w, e: simpleButtonOnExpose(w, e, img))
+    #widget.connect("expose-event", lambda w, e: simpleButtonOnExpose(w, e, img))
     
     # simpleButtonSetBackground(widget, img)
     if helpText != None:
@@ -99,7 +99,7 @@ def drawSizeButton(widget, img, index, getIndex):
     pixbuf = appTheme.getDynamicPixbuf(img + ".png").getPixbuf()
     widget.set_size_request(pixbuf.get_width(), pixbuf.get_height())
     
-    widget.connect("expose-event", lambda w, e: SizeButtonOnExpose(w, e, img, index, getIndex))
+    #widget.connect("expose-event", lambda w, e: SizeButtonOnExpose(w, e, img, index, getIndex))
 
 def SizeButtonOnExpose(widget, event, img, index, getIndex):
     '''Expose function to replace event box's image.'''
@@ -130,7 +130,7 @@ def drawColorButton(widget, img, helpText = None):
     widget.set_size_request(pixbuf.get_width(), pixbuf.get_height())
     
     # simpleButtonSetBackground(widget, img)
-    widget.connect("expose-event", lambda w, e: simpleColorOnExpose(w, e, img))
+    #widget.connect("expose-event", lambda w, e: simpleColorOnExpose(w, e, img))
     if helpText != None:
         setHelpTooltip(widget, helpText)
 
@@ -159,7 +159,7 @@ def drawSeparator(widget, img):
     widget.set_size_request(pixbuf.get_width(), pixbuf.get_height())
     
     # simpleButtonSetBackground(widget, img)
-    widget.connect("expose-event", lambda w, e: SeparatorOnExpose(w, e, img))
+    #widget.connect("expose-event", lambda w, e: SeparatorOnExpose(w, e, img))
 
 def SeparatorOnExpose(widget, event, img):
     '''Expose function to replace event box's image.'''
@@ -394,12 +394,12 @@ def drawTitlebar(widget, name):
     ''' draw title bar '''
     widget.set_size_request(-1,
                              appTheme.getDynamicPixbuf('%s_bg_middle.png' % name).getPixbuf().get_height())
-    widget.connect('expose-event', 
-                   lambda w, e: drawTitlebarOnExpose(
-                       w, e,
-                       appTheme.getDynamicPixbuf('%s_bg_left.png' % name),
-                       appTheme.getDynamicPixbuf('%s_bg_middle.png' % name),
-                       appTheme.getDynamicPixbuf('%s_bg_right.png' % name)))
+    #widget.connect('expose-event', 
+    #               lambda w, e: drawTitlebarOnExpose(
+    #                   w, e,
+    #                   appTheme.getDynamicPixbuf('%s_bg_left.png' % name),
+    #                   appTheme.getDynamicPixbuf('%s_bg_middle.png' % name),
+    #                   appTheme.getDynamicPixbuf('%s_bg_right.png' % name)))
 
 def drawTitlebarOnExpose(widget, event, bgLeftDPixbuf,
                          bgMiddleDPixbuf, bgRightDPixbuf):
@@ -452,10 +452,10 @@ def buttonSetBackground(widget, scaleX, scaleY, normalDPixbuf, hoverDPixbuf, pre
         
     
     widget.set_size_request(Width, Height)
-    widget.connect('expose-event', lambda w, e: buttonOnExpose(
-            w, e,
-            scaleX, scaleY,
-            normalDPixbuf, hoverDPixbuf, pressDPixbuf))
+    #widget.connect('expose-event', lambda w, e: buttonOnExpose(
+    #        w, e,
+    #        scaleX, scaleY,
+    #        normalDPixbuf, hoverDPixbuf, pressDPixbuf))
 
 def buttonOnExpose(widget, event, scaleX, scaleY, normalDPixbuf, hoverDPixbuf, pressDPixbuf):
     ''' Expose function to replace event box's image. '''
