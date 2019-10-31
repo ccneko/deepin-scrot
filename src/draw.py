@@ -92,7 +92,8 @@ def simpleButtonOnExpose(widget, event, img):
                widget.allocation.y)
 
     if widget.get_child() != None:
-        widget.propagate_expose(widget.get_child(), event)
+        print('propagate_draw at simpleButtonOnExpose')
+        widget.propagate_draw(widget.get_child(), event)
 
     return True
 
@@ -122,7 +123,7 @@ def SizeButtonOnExpose(widget, event, img, index, getIndex):
                widget.allocation.y)
 
     if widget.get_child() != None:
-        widget.propagate_expose(widget.get_child(), event)
+        widget.propagate_draw(widget.get_child(), event)
 
     return True
 
@@ -151,7 +152,7 @@ def simpleColorOnExpose(widget, event, img):
                widget.allocation.y)
 
     if widget.get_child() != None:
-        widget.propagate_expose(widget.get_child(), event)
+        widget.propagate_draw(widget.get_child(), event)
 
     return True
 
@@ -289,7 +290,7 @@ def exposeBackground(widget, event, dPixbuf):
     drawPixbuf(cr, dPixbuf.getPixbuf().scale_simple(rect.width, rect.height, Gdk.InterpType.BILINEAR), rect.x, rect.y)
     
     if widget.get_child() != None:
-        widget.propagate_expose(widget.get_child(), event)
+        widget.propagate_draw(widget.get_child(), event)
 
     return True
 
@@ -437,7 +438,8 @@ def drawTitlebarOnExpose(widget, event, bgLeftDPixbuf,
     drawPixbuf(cr, bgRightPixbuf, rOffsetX, rect.y)
 
     if widget.get_child() != None:
-        widget.propagate_expose(widget.get_child(), event)
+        print('propagate_draw')
+        widget.propagate_draw(widget.get_child(), event) # Procedure propagate_draw has been removed and will be replaced with Propagate_Draw
     
     return True
 
@@ -495,7 +497,7 @@ def buttonOnExpose(widget, event, scaleX, scaleY, normalDPixbuf, hoverDPixbuf, p
     drawPixbuf(cr, pixbuf, widget.allocation.x, widget.allocation.y)
     
     if widget.get_child() != None:
-        widget.propagate_expose(widget.get_child(), event)
+        widget.propagate_draw(widget.get_child(), event)
     
     return True 
 
