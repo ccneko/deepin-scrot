@@ -25,6 +25,8 @@ from theme import *
 from utils import *
 import sys
 from constant import DEFAULT_FONT
+from PIL import Image # cc: test
+from io import BytesIO # cc: test
 import cairo
 import gi
 gi.require_version('Gtk', '3.0')
@@ -233,9 +235,19 @@ def updateShape(widget, allocation, radius):
     '''Update shape.'''
     if allocation.width > 0 and allocation.height > 0:
         # Init.
+        win = Gdk.get_default_root_window() # cc: test 
         w, h = allocation.width, allocation.height
-        bitmap = Gdk.Window.create_similar_image_surface(0, 0, w, h, 1)
-        cr = bitmap.cairo_create()
+        bitmap = Gdk.pixbuf_get_from_window(win, 0, 0, w, h)
+        # https://stackoverflow.com/questions/10270080/how-to-draw-a-gdkpixbuf-using-gtk3-and-pygobject/10547095
+        # https://www.crifan.com/python_image_valueerror_not_enough_image_data/
+        # https://stackoverflow.com/questions/54406289/not-enough-image-data-error-when-converting-cv2-numpy-array-into-rgb-image
+        #pil_image = Image.open((w, h), BytesIO(bitmap.get_pixels()))
+        #pil_image = Image.frombytes('RGBA', (w, h), BytesIO(bitmap.get_pixels()).read())
+        #byte_array = array.array('B', pil_image.tostring())
+        print(type(bitmap.get_pixels()))
+        byte_array = bitmap.get_pixels()
+        cr = cairo.ImageSurface.create_for_data(byte_array, cairo.FORMAT_ARGB32, w, h, w * 4)
+        #cr = bitmap.cairo_create()
         
         # Clear the bitmap
         cr.set_source_rgb(0.0, 0.0, 0.0)
@@ -274,7 +286,7 @@ def exposeBackground(widget, event, dPixbuf):
     cr = widget.get_property('window').cairo_create()
     rect = widget.allocation
 
-    drawPixbuf(cr, dPixbuf.getPixbuf().scale_simple(rect.width, rect.height, Gdk.INTERP_BILINEAR), rect.x, rect.y)
+    drawPixbuf(cr, dPixbuf.getPixbuf().scale_simple(rect.width, rect.height, Gdk.InterpType.BILINEAR), rect.x, rect.y)
     
     if widget.get_child() != None:
         widget.propagate_expose(widget.get_child(), event)
@@ -417,10 +429,10 @@ def drawTitlebarOnExpose(widget, event, bgLeftDPixbuf,
     mOffsetX = rect.x + bgLeftPixbuf.get_width()
     mWidth =  rect.width - bgLeftPixbuf.get_width() - bgRightPixbuf.get_width()
     rOffsetX = mOffsetX + mWidth
-    bgLeftPixbuf = bgLeftPixbuf.scale_simple(bgLeftPixbuf.get_width(), rect.height, Gdk.INTERP_BILINEAR)
-    bgRightPixbuf = bgRightPixbuf.scale_simple(bgRightPixbuf.get_width(), rect.height, Gdk.INTERP_BILINEAR)
+    bgLeftPixbuf = bgLeftPixbuf.scale_simple(bgLeftPixbuf.get_width(), rect.height, Gdk.InterpType.BILINEAR)
+    bgRightPixbuf = bgRightPixbuf.scale_simple(bgRightPixbuf.get_width(), rect.height, Gdk.InterpType.BILINEAR)
     drawPixbuf(cr, bgLeftPixbuf, rect.x, rect.y)
-    bmPixbuf = bgMiddlePixbuf.scale_simple(mWidth, rect.height, Gdk.INTERP_BILINEAR)
+    bmPixbuf = bgMiddlePixbuf.scale_simple(mWidth, rect.height, Gdk.InterpType.BILINEAR)
     drawPixbuf(cr, bmPixbuf, mOffsetX, rect.y)
     drawPixbuf(cr, bgRightPixbuf, rOffsetX, rect.y)
 
@@ -477,7 +489,7 @@ def buttonOnExpose(widget, event, scaleX, scaleY, normalDPixbuf, hoverDPixbuf, p
         imageHeight = image.get_height()
         
     
-    pixbuf = image.scale_simple(imageWidth, imageHeight, Gdk.INTERP_BILINEAR)
+    pixbuf = image.scale_simple(imageWidth, imageHeight, Gdk.InterpType.BILINEAR)
     
     cr = widget.get_property('window').cairo_create()
     drawPixbuf(cr, pixbuf, widget.allocation.x, widget.allocation.y)
