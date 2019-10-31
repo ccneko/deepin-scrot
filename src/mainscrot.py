@@ -344,8 +344,8 @@ class MainScrot:
     
     def setColorboxBorder(self, widget):
         '''set colorBox border '''
-        (x, y, width, height, depth) = widget.window.get_geometry() 
-        cr = widget.window.cairo_create()
+        (x, y, width, height, depth) = widget.get_property('window').get_geometry() 
+        cr = widget.get_property('window').cairo_create()
         cr.set_line_width(2)
         cr.rectangle(0,0,width, height)
         cr.set_source_rgb(*colorHexToCairo("#000000"))
@@ -595,7 +595,7 @@ class MainScrot:
         '''Hide text window.'''
         self.showTextWindowFlag = False
         self.textView.get_buffer().set_text("")
-        self.textWindow.hide_all()
+        self.textWindow.hide()
         
     
     def getInputText(self):
@@ -653,7 +653,7 @@ class MainScrot:
     def hideToolbar(self):
         '''Hide toolbar.'''
         self.showToolbarFlag = False
-        self.toolbarWindow.hide_all()
+        self.toolbarWindow.hide()
     
     def showColorbar(self):
         '''show colorbar '''
@@ -672,7 +672,7 @@ class MainScrot:
     def hideColorbar(self):
         '''hide colorbar'''
         self.showColorbarFlag = False
-        self.colorbarWindow.hide_all()
+        self.colorbarWindow.hide()
       
   
     def adjustToolbar(self):
@@ -857,12 +857,12 @@ class MainScrot:
                 setPixbufCursor(self.window, "start_cursor.png")
             
             elif self.action in (ACTION_RECTANGLE, ACTION_ELLIPSE):
-                setCursor(self.window, Gdk.TCROSS)
+                setCursor(self.window, Gdk.CursorType.TCROSS)
             
             elif self.action == ACTION_LINE:
-                setCursor(self.window, Gdk.PENCIL)
+                setCursor(self.window, Gdk.CursorType.PENCIL)
             elif self.action == ACTION_TEXT:
-                setCursor(self.window, Gdk.XTERM)
+                setCursor(self.window, Gdk.CursorType.XTERM)
             else:
                 self.window.window.set_cursor(None)
                 
@@ -902,7 +902,7 @@ class MainScrot:
                 drawTextX, drawTextY, drawTextWidth, drawTextHeight = self.currentTextAction.getLayoutInfo()
                 if drawTextX < tx < drawTextX + drawTextWidth and drawTextY < ty < drawTextY + drawTextHeight:
                     self.drawTextLayoutFlag = True
-                    setCursor(self.window, Gdk.FLEUR)
+                    setCursor(self.window, Gdk.CursorType.FLEUR)
                     self.window.queue_draw()
                 else:
                     self.drawTextLayoutFlag = False    
@@ -1017,18 +1017,18 @@ class MainScrot:
         dialog = Gtk.FileChooserDialog(
             "Save..",
             self.window,
-            Gtk.FILE_CHOOSER_ACTION_SAVE,
-            (Gtk.STOCK_CANCEL, Gtk.RESPONSE_REJECT,
-             Gtk.STOCK_SAVE, Gtk.RESPONSE_ACCEPT))
+            Gtk.FileChooserAction.SAVE,
+            (Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT,
+             Gtk.STOCK_SAVE, Gtk.ResponseType.ACCEPT))
         
-        dialog.set_action(Gtk.FILE_CHOOSER_ACTION_SAVE)
-        dialog.set_default_response(Gtk.RESPONSE_ACCEPT)
-        dialog.set_position(Gtk.WIN_POS_MOUSE)
+        dialog.set_action(Gtk.FileChooserAction.SAVE)
+        dialog.set_default_response(Gtk.ResponseType.ACCEPT)
+        dialog.set_position(Gtk.WindowPosition.MOUSE)
         dialog.set_local_only(True)
         dialog.set_current_folder(os.environ['HOME'])
         dialog.set_current_name("%s%s.%s" % (DEFAULT_FILENAME, getFormatTime(), self.saveFiletype))
         
-        optionMenu = Gtk.OptionMenu()
+        optionMenu = Gtk.ComboBox()
         optionMenu.set_size_request(155, -1)
         menu = Gtk.Menu()
         menu.set_size_request(155, -1)
@@ -1062,11 +1062,11 @@ class MainScrot:
             self.hideColorbar()
             
         response = dialog.run()
-        if response == Gtk.RESPONSE_ACCEPT:
+        if response == Gtk.ResponseType.ACCEPT:
             filename = dialog.get_filename()
             self.saveSnapshot(filename, self.saveFiletype)
             print("Save snapshot to %s" % (filename))
-        elif response == Gtk.RESPONSE_REJECT:
+        elif response == Gtk.ResponseType.REJECT:
             self.adjustToolbar()
             self.showToolbar()
             
@@ -1131,7 +1131,7 @@ class MainScrot:
     def redraw(self, widget, event):
         '''Redraw.'''
         # Init cairo.
-        cr = widget.window.cairo_create()
+        cr = widget.get_property('window').cairo_create()
         
         # Draw desktop background.
         self.drawDesktopBackground(cr)
@@ -1343,7 +1343,7 @@ class MainScrot:
     def setCursor(self, position):
         '''Set cursor.'''
         if position == DRAG_INSIDE:
-            setCursor(self.window, Gdk.FLEUR)
+            setCursor(self.window, Gdk.CursorType.FLEUR)
         elif position == DRAG_OUTSIDE:
             setCursor(self.window, Gdk.CursorType.TOP_LEFT_ARROW)
         elif position == DRAG_TOP_LEFT_CORNER:
@@ -1415,7 +1415,7 @@ class MainScrot:
         cr.stroke()
     def getCurrentCoord(self, widget):
         '''get Current Coord '''
-        (self.currentX, self.currentY) = widget.window.get_pointer()[:2] 
+        (self.currentX, self.currentY) = widget.get_property('window').get_pointer()[:2] 
 
     
 if __name__ == "__main__":

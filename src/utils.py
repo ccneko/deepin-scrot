@@ -51,13 +51,13 @@ def setClickableCursor(widget):
 
 def setDefaultCursor(widget):
     '''Set default cursor.'''
-    widget.window.set_cursor(None)
+    widget.get_property('window').set_cursor(None)
     
     return False
 
 def setCursor(widget, cursorType):
     '''Set cursor.'''
-    widget.window.set_cursor(Gdk.Cursor(cursorType))
+    widget.get_property('window').set_cursor(Gdk.Cursor(cursorType))
     
     return False
 
@@ -67,7 +67,7 @@ def getScreenSize():
 
 def isDoubleClick(event):
     '''Whether an event is double click?'''
-    return event.button == 1 and event.type == Gdk._2BUTTON_PRESS
+    return event.button == 1 and event.type == Gdk.EventType._2BUTTON_PRESS
 
 def getFontFamilies():
     '''Get all font families in system.'''
@@ -101,7 +101,7 @@ def getCoordRGB(widget, x, y):
     '''get coordinate's pixel. '''
     width, height = widget.get_size()
     colormap = widget.get_window().get_colormap()
-    image = Gdk.Image(Gdk.IMAGE_NORMAL, widget.window.get_visual(), width, height)
+    image = Gdk.Image(Gdk.IMAGE_NORMAL, widget.get_property('window').get_visual(), width, height)
     image.set_colormap(colormap)
     gdkcolor =  colormap.query_color(image.get_pixel(x, y))
     return (gdkcolor.red / 256, gdkcolor.green / 256, gdkcolor.blue / 256)

@@ -41,7 +41,7 @@ def getKeyEventModifiers(keyEvent):
     modifiers = []
     
     # Add Ctrl modifier.
-    if keyEvent.state & Gdk.CONTROL_MASK:
+    if keyEvent.state & Gdk.ModifierType.CONTROL_MASK:
         modifiers.append("C")
         
     # Add Alt modifier.

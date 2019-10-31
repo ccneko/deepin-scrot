@@ -28,7 +28,7 @@ from constant import DEFAULT_FONT
 import cairo
 import gi
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
+from gi.repository import Gtk, Gdk
 import glib
 from window import screenWidth, screenHeight
 
@@ -84,7 +84,7 @@ def simpleButtonOnExpose(widget, event, img):
     elif widget.state == Gtk.StateType.ACTIVE:
         pixbuf = appTheme.getDynamicPixbuf(img + "_press.png").getPixbuf()
     
-    cr = widget.window.cairo_create()
+    cr = widget.get_property('window').cairo_create()
     drawPixbuf(cr, pixbuf, 
                widget.allocation.x,
                widget.allocation.y)
@@ -114,7 +114,7 @@ def SizeButtonOnExpose(widget, event, img, index, getIndex):
         pixbuf = appTheme.getDynamicPixbuf(img + "_press.png").getPixbuf()
         
     
-    cr = widget.window.cairo_create()
+    cr = widget.get_property('window').cairo_create()
     drawPixbuf(cr, pixbuf, 
                widget.allocation.x,
                widget.allocation.y)
@@ -143,7 +143,7 @@ def simpleColorOnExpose(widget, event, img):
     elif widget.state == Gtk.StateType.ACTIVE:
         pixbuf = appTheme.getDynamicPixbuf(img + "_hover.png").getPixbuf()
     
-    cr = widget.window.cairo_create()
+    cr = widget.get_property('window').cairo_create()
     drawPixbuf(cr, pixbuf, 
                widget.allocation.x,
                widget.allocation.y)
@@ -166,7 +166,7 @@ def SeparatorOnExpose(widget, event, img):
     pixbuf = appTheme.getDynamicPixbuf(img + ".png").getPixbuf()
 
     
-    cr = widget.window.cairo_create()
+    cr = widget.get_property('window').cairo_create()
     drawPixbuf(cr, pixbuf, 
                widget.allocation.x,
                widget.allocation.y)
@@ -234,7 +234,7 @@ def updateShape(widget, allocation, radius):
     if allocation.width > 0 and allocation.height > 0:
         # Init.
         w, h = allocation.width, allocation.height
-        bitmap = Gtk.gdk.Pixmap(None, w, h, 1)
+        bitmap = Gdk.Window.create_similar_image_surface(0, 0, w, h, 1)
         cr = bitmap.cairo_create()
         
         # Clear the bitmap
@@ -271,10 +271,10 @@ def drawRoundRectangle(cr, x, y, width, height, r):
 
 def exposeBackground(widget, event, dPixbuf):
     '''Expose background.'''
-    cr = widget.window.cairo_create()
+    cr = widget.get_property('window').cairo_create()
     rect = widget.allocation
 
-    drawPixbuf(cr, dPixbuf.getPixbuf().scale_simple(rect.width, rect.height, Gtk.gdk.INTERP_BILINEAR), rect.x, rect.y)
+    drawPixbuf(cr, dPixbuf.getPixbuf().scale_simple(rect.width, rect.height, Gdk.INTERP_BILINEAR), rect.x, rect.y)
     
     if widget.get_child() != None:
         widget.propagate_expose(widget.get_child(), event)
@@ -319,8 +319,8 @@ def drawFont(cr, content, fontSize, fontColor, x, y):
 
 def setPixbufCursor(widget, cursorName):
     pixbuf = appTheme.getDynamicPixbuf(cursorName).getPixbuf()
-    display = widget.window.get_display()
-    widget.window.set_cursor(Gtk.gdk.Cursor(display, pixbuf, 0, 0))
+    display = widget.get_property('window').get_display()
+    widget.get_property('window').set_cursor(Gdk.Cursor(display, pixbuf, 0, 0))
 
 
 def drawMagnifier(cr, widget, x, y, sizeContent, tipContent = "", rgbContent = "RGB:(255,255,255)"):
@@ -338,7 +338,7 @@ def drawMagnifier(cr, widget, x, y, sizeContent, tipContent = "", rgbContent = "
     else:
         offsetX = 3
 
-    pixbuf = Gtk.gdk.Pixbuf(Gtk.gdk.COLORSPACE_RGB, False, 8, pixbufWidth, pixbufHeight)
+    pixbuf = Gdk.Pixbuf(Gdk.COLORSPACE_RGB, False, 8, pixbufWidth, pixbufHeight)
     pixbuf.get_from_drawable(widget.get_window(), widget.get_window().get_colormap(),
             int(fabs(x - pixbufWidth / 2)), int(fabs(y - pixbufHeight / 2)),
             0, 0,
@@ -411,16 +411,16 @@ def drawTitlebarOnExpose(widget, event, bgLeftDPixbuf,
     rect = widget.allocation
     
     # Get cairo object
-    cr = widget.window.cairo_create()
+    cr = widget.get_property('window').cairo_create()
     
     # Draw background
     mOffsetX = rect.x + bgLeftPixbuf.get_width()
     mWidth =  rect.width - bgLeftPixbuf.get_width() - bgRightPixbuf.get_width()
     rOffsetX = mOffsetX + mWidth
-    bgLeftPixbuf = bgLeftPixbuf.scale_simple(bgLeftPixbuf.get_width(), rect.height, Gtk.gdk.INTERP_BILINEAR)
-    bgRightPixbuf = bgRightPixbuf.scale_simple(bgRightPixbuf.get_width(), rect.height, Gtk.gdk.INTERP_BILINEAR)
+    bgLeftPixbuf = bgLeftPixbuf.scale_simple(bgLeftPixbuf.get_width(), rect.height, Gdk.INTERP_BILINEAR)
+    bgRightPixbuf = bgRightPixbuf.scale_simple(bgRightPixbuf.get_width(), rect.height, Gdk.INTERP_BILINEAR)
     drawPixbuf(cr, bgLeftPixbuf, rect.x, rect.y)
-    bmPixbuf = bgMiddlePixbuf.scale_simple(mWidth, rect.height, Gtk.gdk.INTERP_BILINEAR)
+    bmPixbuf = bgMiddlePixbuf.scale_simple(mWidth, rect.height, Gdk.INTERP_BILINEAR)
     drawPixbuf(cr, bmPixbuf, mOffsetX, rect.y)
     drawPixbuf(cr, bgRightPixbuf, rOffsetX, rect.y)
 
@@ -477,9 +477,9 @@ def buttonOnExpose(widget, event, scaleX, scaleY, normalDPixbuf, hoverDPixbuf, p
         imageHeight = image.get_height()
         
     
-    pixbuf = image.scale_simple(imageWidth, imageHeight, Gtk.gdk.INTERP_BILINEAR)
+    pixbuf = image.scale_simple(imageWidth, imageHeight, Gdk.INTERP_BILINEAR)
     
-    cr = widget.window.cairo_create()
+    cr = widget.get_property('window').cairo_create()
     drawPixbuf(cr, pixbuf, widget.allocation.x, widget.allocation.y)
     
     if widget.get_child() != None:
