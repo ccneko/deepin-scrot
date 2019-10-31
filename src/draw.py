@@ -260,7 +260,7 @@ def updateShape(widget, allocation, radius):
         drawRoundRectangle(cr, 0, 0, w, h, radius)
         cr.fill()
         
-        widget.shape_combine_mask(bitmap, 0, 0)
+        # widget.shape_combine_mask(bitmap, 0, 0) # Shape_Combine_Mask, Input_Shape_Combine_Mask and Reset_Shapes have been removed without replacements.
 
 def drawRoundRectangle(cr, x, y, width, height, r):
     '''Draw round rectangle.'''
