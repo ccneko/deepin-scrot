@@ -39,7 +39,7 @@ from window import screenWidth, screenHeight
 def drawPixbuf(cr, pixbuf, x=0, y=0):
     '''Draw pixbuf.'''
     if pixbuf != None:
-        cr.set_source_pixbuf(pixbuf, x, y)
+        Gdk.cairo_set_source_pixbuf(cr, pixbuf, x, y)
         cr.paint()
         
 def colorHexToCairo(color):
