@@ -1084,7 +1084,7 @@ class MainScrot:
     def saveSnapshot(self, filename=None, filetype='png'):
         '''Save snapshot.'''
         # Init cairo.
-        cr = self.window.window.cairo_create()
+        cr = self.window.get_property('window').cairo_create()
         
         # Draw desktop background.
         self.drawDesktopBackground(cr)
