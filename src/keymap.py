@@ -45,11 +45,11 @@ def getKeyEventModifiers(keyEvent):
         modifiers.append("C")
         
     # Add Alt modifier.
-    if keyEvent.state & Gdk.MOD1_MASK:
+    if keyEvent.state & Gdk.ModifierType.MOD1_MASK:
         modifiers.append("M")
         
     # Don't need add Shift modifier if keyval is upper character.
-    if keyEvent.state & Gdk.SHIFT_MASK and not Gdk.keyval_is_upper(keyEvent.keyval):
+    if keyEvent.state & Gdk.ModifierType.SHIFT_MASK and not Gdk.keyval_is_upper(keyEvent.keyval):
         modifiers.append("S")
         
     return modifiers
