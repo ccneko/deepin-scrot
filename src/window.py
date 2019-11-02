@@ -23,7 +23,7 @@
 from Xlib import X, display, Xutil, Xcursorfont
 import gi
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gdk
+from gi.repository import Gdk, GdkPixbuf
 from  collections import namedtuple
 
 screenWidth, screenHeight = Gdk.get_default_root_window().get_geometry()[2:]
@@ -214,9 +214,9 @@ def getScrotPixbuf(fullscreen=True):
     if not fullscreen:
         (x, y, width, height) = convertCoord(*getWindowCoord(getXlibPointerWindow()))
     else:
-        (x, y, width, height, depth) = rootWindow.get_geometry() 
+        (x, y, width, height) = rootWindow.get_geometry() 
     
-    pixbuf = Gdk.Pixbuf(Gdk.COLORSPACE_RGB, False, 8, width, height)
+    pixbuf = GdkPixbuf.Pixbuf.new(GdkPixbuf.Colorspace.RGB, False, 8, width, height)
     pixbuf.get_from_drawable(rootWindow, rootWindow.get_colormap(), x, y, 0, 0, width, height)
     return pixbuf
 
