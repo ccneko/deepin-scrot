@@ -101,8 +101,9 @@ def setSaveFiletype(widget, filetype):
 def processArguments():
     '''init processArguments '''
     parser = OptionParser(usage="Usage: %prog [options] [arg]", version="%prog v1.0")
-    parser.add_option("-f", "--full", action="store_true", dest="fullscreen", help="Taking the fullscreen shot")
-    parser.add_option("-w", "--window", action="store_true", dest="window", help="Taking the currently focused window")
+    group = parser.add_mutually_exclusive_group()
+    group.add_option("-f", "--full", action="store_true", dest="fullscreen", help="Taking the fullscreen shot")
+    group.add_option("-w", "--window", action="store_true", dest="window", help="Taking the currently focused window")
     parser.add_option("-d", "--delay", dest="delay", type="int", help="wait NUM seconds before taking a shot", metavar="NUM")
     
     (options, args) = parser.parse_args()
