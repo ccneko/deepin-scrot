@@ -352,7 +352,7 @@ def drawMagnifier(cr, widget, x, y, sizeContent, tipContent = "", rgbContent = "
         offsetX = 3
 
     pixbuf = GdkPixbuf.Pixbuf.new(GdkPixbuf.Colorspace.RGB, False, 8, pixbufWidth, pixbufHeight)
-    pixbuf.get_from_drawable(widget.get_window(), widget.get_window().get_colormap(),
+    pixbuf.get_from_window(widget.get_window(), widget.get_window().get_colormap(),
             int(fabs(x - pixbufWidth / 2)), int(fabs(y - pixbufHeight / 2)),
             0, 0,
             pixbufWidth, pixbufHeight)

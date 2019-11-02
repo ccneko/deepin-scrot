@@ -217,7 +217,7 @@ def getScrotPixbuf(fullscreen=True):
         (x, y, width, height) = rootWindow.get_geometry() 
     
     pixbuf = GdkPixbuf.Pixbuf.new(GdkPixbuf.Colorspace.RGB, False, 8, width, height)
-    pixbuf.get_from_drawable(rootWindow, rootWindow.get_colormap(), x, y, 0, 0, width, height)
+    pixbuf.get_from_window(rootWindow, rootWindow.get_colormap(), x, y, 0, 0, width, height)
     return pixbuf
 
 
