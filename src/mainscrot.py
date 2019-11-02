@@ -1033,7 +1033,7 @@ class MainScrot:
         
         optionMenu = Gtk.ComboBox()
         optionMenu.set_size_request(155, -1)
-        menu = Gtk.Menu()
+        menu = Gtk.MenuBar()
         menu.set_size_request(155, -1)
         
         pngItem = makeMenuItem('PNG (*.png)',
@@ -1051,12 +1051,13 @@ class MainScrot:
         menu.append(pngItem)
         menu.append(jpgItem)
         menu.append(bmpItem)
-        optionMenu.set_menu(menu)
+        #optionMenu.set_model(menu)
         
         
         hbox = Gtk.HBox()
-        hbox.pack_end(optionMenu, False, False)
-        dialog.vbox.pack_start(hbox, False, False)
+        print(optionMenu)
+        hbox.pack_end(optionMenu, expand=False, fill=False, padding=0)
+        dialog.vbox.pack_start(hbox, expand=False, fill=False, padding=0)
         hbox.show_all()                          
         
         
