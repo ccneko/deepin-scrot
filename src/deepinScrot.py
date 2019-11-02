@@ -27,7 +27,7 @@ from gi.repository import Gtk
 import os, sys, time
 from mainscrot import MainScrot
 from window import getScrotPixbuf
-from optparse import OptionParser
+from argparse import ArgumentParser
 from tipswindow import countdownWindow
 from utils import makeMenuItem, getFormatTime
 from constant import DEFAULT_FILENAME
@@ -100,30 +100,31 @@ def setSaveFiletype(widget, filetype):
 
 def processArguments():
     '''init processArguments '''
-    parser = OptionParser(usage="Usage: %prog [options] [arg]", version="%prog v1.0")
+    parser = ArgumentParser(usage="Usage: %prog [options] [arg]")
     group = parser.add_mutually_exclusive_group()
-    group.add_option("-f", "--full", action="store_true", dest="fullscreen", help="Taking the fullscreen shot")
-    group.add_option("-w", "--window", action="store_true", dest="window", help="Taking the currently focused window")
-    parser.add_option("-d", "--delay", dest="delay", type="int", help="wait NUM seconds before taking a shot", metavar="NUM")
+    group.add_argument("-f", "--full", action="store_true", dest="fullscreen", help="Taking the fullscreen shot")
+    group.add_argument("-w", "--window", action="store_true", dest="window", help="Taking the currently focused window")
+    parser.add_argument("-d", "--delay", dest="delay", type=int, help="wait NUM seconds before taking a shot", metavar="NUM")
+    parser.add_argument("-v", "--version", action='version', version='%(prog) 2.0')
     
-    (options, args) = parser.parse_args()
+    args = parser.parse_args()
     #print parser.parse_args()
-    if options.fullscreen and options.window:
+    if args.fullscreen and args.window:
         parser.error("options -f and -w are mutually exclusive")
-    elif options.fullscreen:
-        if options.delay:
-            countdownWindow(options.delay)
+    elif args.fullscreen:
+        if args.delay:
+            countdownWindow(args.delay)
             openFileDialog()
         else:
             openFileDialog()
-    elif options.window:
-        if options.delay:
-            countdownWindow(options.delay)
+    elif args.window:
+        if args.delay:
+            countdownWindow(args.delay)
             openFileDialog(False)
         else:
             openFileDialog(False)
-    elif options.fullscreen and options.window or options.delay:
-        countdownWindow(options.delay)
+    elif args.fullscreen and args.window or args.delay:
+        countdownWindow(args.delay)
         MainScrot()
     else:
          MainScrot()
