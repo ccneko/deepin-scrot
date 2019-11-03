@@ -51,10 +51,9 @@ class tipWindow():
         self.tipWindow.set_skip_taskbar_hint(True)
         self.tipWindow.set_skip_pager_hint(True)
 
-    
-        
         self.tipWindow.move(screenWidth - 250 , 34)
-        self.tipWindow.connect('expose-event', self.tipExpose)
+        self.tipExpose
+        #self.tipWindow.connect('expose-event', self.tipExpose)
         self.tipWindow.connect("size-allocate", lambda w, a: updateShape(w, a, 4))
         
         # Create tooltips label.
@@ -102,22 +101,23 @@ class countdownWindow():
     '''  show a countdown before taking the shot'''
     def __init__(self, count):
         ''' Init tip Window'''
-        screenWidth, screenHeight = Gdk.get_default_root_window().get_size()
+        x, y, screenWidth, screenHeight = Gdk.get_default_root_window().get_geometry()
         self.count = count
         self.paddingX = 10
         
-        self.tipWindow = Gtk.Window(Gtk.WINDOW_TOPLEVEL)
+        self.tipWindow = Gtk.Window(Gtk.WindowType.TOPLEVEL)
         self.tipWindow.set_skip_taskbar_hint(True)
         self.tipWindow.set_skip_pager_hint(True)
         self.tipWindow.set_keep_above(True)
         self.tipWindow.set_size_request(100, 100)
         self.tipWindow.set_decorated(False)
-        self.tipWindow.modify_fg(Gtk.STATE_NORMAL, Gdk.color_parse("black"))
+        self.tipWindow.modify_fg(Gtk.StateType.NORMAL, Gdk.color_parse("black"))
         self.tipWindow.set_accept_focus(False)
         self.tipWindow.set_icon_from_file("../theme/logo/deepin-scrot.ico")
         self.tipWindow.set_opacity(0.8)
         self.tipWindow.move(screenWidth - 200 , 34)
-        self.tipWindow.connect('expose-event', self.tipExpose)
+        self.tipExpose
+        #self.tipWindow.connect('expose-event', self.tipExpose)
         self.tipWindow.connect("size-allocate", lambda w, a: updateShape(w, a, 4))
         
         # Create tooltips label.
@@ -165,6 +165,4 @@ if __name__ == '__main__':
     ''' '''
     if len(sys.argv) >= 2:
         tipWindow(sys.argv[1])
-    
-
     
