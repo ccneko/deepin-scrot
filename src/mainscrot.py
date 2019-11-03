@@ -1101,8 +1101,8 @@ class MainScrot:
             eachTextAction.draw(cr)
             
         # Get snapshot.
-        pixbuf = GdkPixbuf(GdkPixbuf.Colorspace.RGB, False, 8, int(self.rectWidth), int(self.rectHeight))
-        pixbuf.get_from_drawable(
+        pixbuf = GdkPixbuf.Pixbuf.new(GdkPixbuf.Colorspace.RGB, False, 8, int(self.rectWidth), int(self.rectHeight))
+        pixbuf = Gdk.pixbuf_get_from_window(
             self.window.get_window(), self.window.get_window().get_colormap(),
             self.x, self.y,
             0, 0,
