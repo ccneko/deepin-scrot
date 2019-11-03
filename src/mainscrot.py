@@ -42,12 +42,15 @@ import time
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, GdkPixbuf
-#from gi.repository import Pango
 
 import os
 import glib
 import subprocess
 
+import logging
+
+logger = logging.getLogger(__name__)
+logger.setLevel('DEBUG')
 
 class MainScrot:
     '''Main scrot.'''
@@ -56,12 +59,13 @@ class MainScrot:
         '''Init Main scrot.'''
 
         # Init.
+        logger.debug('Initiate MainScrot()')
         self.action = ACTION_WINDOW
         self.width = self.height = 0
         self.x = self.y = self.rectWidth = self.rectHeight = 0
         self.buttonToggle = None
         
-        self.frameColor = "#00AEFF"# "#FFFF0" 
+        self.frameColor = "#00AEFF"
         self.frameLineWidth = 2
         self.dragPosition = None
         self.dragStartX = self.dragStartY = self.dragStartOffsetX = self.drawStartOffsetY = 0
@@ -74,16 +78,20 @@ class MainScrot:
         self.textDragOffsetX = self.textDragOffsetY = 0
         self.saveFiletype = 'png'
         
+        self.toolbarX = self.x
+        self.toolbarY = self.y
         self.toolbarOffsetX = 10
         self.toolbarOffsetY = 10
-        #self.toolbarHeight = 50
+        self.toolbarHeight = 50
         
         self.actionSize = 2
         self.actionColor = "#FF0000"
         self.fontName = "Sans 10"
         
         # default window 
+        logger.debug('Start getScrotWindowInfo()')
         self.scrotWindowInfo = getScrotWindowInfo()
+        logger.debug('Finish getScrotWindowInfo()')
         self.windowFlag = True
 
         # keybinding map
@@ -938,26 +946,22 @@ class MainScrot:
         elif self.action == ACTION_RECTANGLE:
             self.currentAction.endDraw(self.getEventCoord(event), (self.x, self.y, self.rectWidth, self.rectHeight))
             self.actionList.append(self.currentAction)
-            self.currentAction = None
-            
+            self.currentAction = None   
             self.window.queue_draw()
         elif self.action == ACTION_ELLIPSE:
             self.currentAction.endDraw(self.getEventCoord(event), (self.x, self.y, self.rectWidth, self.rectHeight))
             self.actionList.append(self.currentAction)
             self.currentAction = None
-            
             self.window.queue_draw()
         elif self.action == ACTION_ARROW:
             self.currentAction.endDraw(self.getEventCoord(event), (self.x, self.y, self.rectWidth, self.rectHeight))
             self.actionList.append(self.currentAction)
             self.currentAction = None
-            
             self.window.queue_draw()
         elif self.action == ACTION_LINE:
             self.currentAction.endDraw(self.getEventCoord(event), (self.x, self.y, self.rectWidth, self.rectHeight))
             self.actionList.append(self.currentAction)
             self.currentAction = None
-            
             self.window.queue_draw()
         
         if self.action in [ACTION_RECTANGLE, ACTION_ELLIPSE, ACTION_ARROW, ACTION_LINE, ACTION_TEXT] and not self.showToolbarFlag and self.y < self.toolbarY < self.y + self.rectHeight:
@@ -1417,7 +1421,6 @@ class MainScrot:
 
     def getCurrentCoord(self, widget):
         '''get Current Coord '''
-        print('test')
         (self.currentX, self.currentY) = widget.get_property('window').get_pointer()[:2] 
 
     
