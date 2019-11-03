@@ -33,7 +33,8 @@ class tipWindow():
     ''' tip window'''
     def __init__(self, content):
         ''' Init tip Window'''
-        screenWidth, screenHeight = Gdk.get_default_root_window().get_size()
+        print(Gdk.get_default_root_window().get_geometry())
+        x, y, screenWidth, screenHeight = Gdk.get_default_root_window().get_geometry()
         self.delta = 0.01
         self.alpha = 1
         self.paddingX = 10
