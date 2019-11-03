@@ -45,7 +45,7 @@ def openFileDialog(fullscreen=True, filetype='png'):
         
 
     dialog.set_default_response(Gtk.ResponseType.ACCEPT)
-    dialog.set_position(Gtk.WIN_POS_CENTER)
+    dialog.set_position(Gtk.WindowPosition.CENTER)
     dialog.set_local_only(True)
         
     
@@ -134,8 +134,3 @@ def processArguments():
 if __name__ == '__main__':
     processArguments()
     
-        
-        
-    
-
-

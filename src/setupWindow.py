@@ -34,40 +34,40 @@ class DeepinScrotSetup:
         
         # Init widgets.
         self.window = self.initMainWindow()
-        self.window.connect("destroy", lambda w: gtk.main_quit())
+        self.window.connect("destroy", lambda w: Gtk.main_quit())
         # self.window.connect("size-allocate", lambda w, a: updateShape(w, a, 4))
-        self.generalMainbox = gtk.VBox(False, 10)
+        self.generalMainbox = Gtk.VBox(False, 10)
         # setup 
         
         
-        self.bodyAlign = gtk.Alignment()
+        self.bodyAlign = Gtk.Alignment()
         self.bodyAlign.set_padding(10, 20, 10, 10)
         
-        imageSetupFrame = gtk.Frame("图片格式")
+        imageSetupFrame = Gtk.Frame("图片格式")
 
-        imageSetupMainBox = gtk.VBox()
-        imageQualityHbox = gtk.HBox(False,40)
-        self.adj1 = gtk.Adjustment(0, 0, 110, 10, 10, 10)
-        self.imageQualityLabel  = gtk.Label("质量:")
-        self.imageQualityHscale = gtk.HScale(self.adj1)
+        imageSetupMainBox = Gtk.VBox()
+        imageQualityHbox = Gtk.HBox(False,40)
+        self.adj1 = Gtk.Adjustment(0, 0, 110, 10, 10, 10)
+        self.imageQualityLabel  = Gtk.Label("质量:")
+        self.imageQualityHscale = Gtk.HScale(self.adj1)
         self.imageQualityHscale.set_size_request(190, -1)
-        self.imageQualityHscale.set_value_pos(gtk.POS_RIGHT)
+        self.imageQualityHscale.set_value_pos(Gtk.POS_RIGHT)
         self.imageQualityHscale.set_digits(0)
         self.imageQualityHscale.set_draw_value(True)
-        self.imageQualityHscale.set_update_policy(gtk.UPDATE_CONTINUOUS)
+        self.imageQualityHscale.set_update_policy(Gtk.UPDATE_CONTINUOUS)
         imageQualityHbox.pack_start(self.imageQualityLabel, False, False)
         imageQualityHbox.pack_start(self.imageQualityHscale, False, False)
         
-        imageFormatHbox = gtk.HBox(False, 10)
-        imageFormatLabel = gtk.Label("图片格式:")
+        imageFormatHbox = Gtk.HBox(False, 10)
+        imageFormatLabel = Gtk.Label("图片格式:")
 
         
-        imageFormatList = gtk.OptionMenu()
+        imageFormatList = Gtk.OptionMenu()
         imageFormatList.set_size_request(180, -1)
-        menu = gtk.Menu()
-        pngItem = gtk.MenuItem("png - PNG 图像格式")
-        jpegItem = gtk.MenuItem("jpeg - JPEG 图像格式")
-        bmpItem = gtk.MenuItem("bmp - BMP 图像格式")
+        menu = Gtk.Menu()
+        pngItem = Gtk.MenuItem("png - PNG 图像格式")
+        jpegItem = Gtk.MenuItem("jpeg - JPEG 图像格式")
+        bmpItem = Gtk.MenuItem("bmp - BMP 图像格式")
         menu.append(pngItem)
         menu.append(jpegItem)
         menu.append(bmpItem)
@@ -79,37 +79,37 @@ class DeepinScrotSetup:
         imageSetupMainBox.pack_start(imageQualityHbox)
         imageSetupMainBox.pack_start(imageFormatHbox)
         
-        imageQualityAlign = gtk.Alignment()
+        imageQualityAlign = Gtk.Alignment()
         imageQualityAlign.set_padding(10, 10, 10, 10)
         imageQualityAlign.add(imageSetupMainBox)
         imageSetupFrame.add(imageQualityAlign)
         
         # save 
-        saveProjectFrame = gtk.Frame("保存方案")
-        saveProjectMainbox = gtk.VBox()
-        self.tipsaveRadio = gtk.RadioButton(None, "提示保存")
-        self.autosaveRadio = gtk.RadioButton(self.tipsaveRadio, "自动保存")
-        saveFilenameHbox = gtk.HBox(False, 26)
-        saveFilenameLabel = gtk.Label("文件名:")
-        self.saveFilenameEntry = gtk.Entry()
+        saveProjectFrame = Gtk.Frame("保存方案")
+        saveProjectMainbox = Gtk.VBox()
+        self.tipsaveRadio = Gtk.RadioButton(None, "提示保存")
+        self.autosaveRadio = Gtk.RadioButton(self.tipsaveRadio, "自动保存")
+        saveFilenameHbox = Gtk.HBox(False, 26)
+        saveFilenameLabel = Gtk.Label("文件名:")
+        self.saveFilenameEntry = Gtk.Entry()
         saveFilenameHbox.pack_start(saveFilenameLabel, False, False)
         saveFilenameHbox.pack_start(self.saveFilenameEntry)
         
-        saveDirHbox = gtk.HBox(False, 10)
-        saveDirLabel = gtk.Label("保存目录:")
-        self.saveDirButton = gtk.FileChooserButton("dir")
-        self.saveDirButton.set_action(gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER)
+        saveDirHbox = Gtk.HBox(False, 10)
+        saveDirLabel = Gtk.Label("保存目录:")
+        self.saveDirButton = Gtk.FileChooserButton("dir")
+        self.saveDirButton.set_action(Gtk.FileChooserAction.SELECT_FOLDER)
         saveDirHbox.pack_start(saveDirLabel, False, False)
         saveDirHbox.pack_start(self.saveDirButton)
-        saveDirMainbox = gtk.VBox()
+        saveDirMainbox = Gtk.VBox()
         
         saveDirMainbox.pack_start(saveFilenameHbox)
         saveDirMainbox.pack_start(saveDirHbox)
-        saveDirAlign = gtk.Alignment()
+        saveDirAlign = Gtk.Alignment()
         saveDirAlign.set_padding(0, 0, 20, 10)
         saveDirAlign.add(saveDirMainbox)
         
-        saveProjectAlign = gtk.Alignment()
+        saveProjectAlign = Gtk.Alignment()
         saveProjectAlign.set_padding(10, 10, 10, 10)
         
         saveProjectFrame.add(saveProjectAlign)
@@ -119,14 +119,14 @@ class DeepinScrotSetup:
         saveProjectMainbox.pack_start(saveDirAlign)
         
         # buttons
-        controlBox = gtk.HBox(True, 5)
-        controlAlign = gtk.Alignment()
+        controlBox = Gtk.HBox(True, 5)
+        controlAlign = Gtk.Alignment()
         controlAlign.set(1.0, 0.0, 0.0, 0.0)
         controlAlign.add(controlBox)
         
-        okButton = gtk.Button(None, gtk.STOCK_OK)
-        cancelButton = gtk.Button(None, gtk.STOCK_CANCEL)
-        applyButton = gtk.Button(None, gtk.STOCK_APPLY)
+        okButton = Gtk.Button(None, Gtk.STOCK_OK)
+        cancelButton = Gtk.Button(None, Gtk.STOCK_CANCEL)
+        applyButton = Gtk.Button(None, Gtk.STOCK_APPLY)
         controlBox.pack_start(okButton)
         controlBox.pack_start(cancelButton)
         controlBox.pack_start(applyButton)
@@ -144,14 +144,14 @@ class DeepinScrotSetup:
 
         
         self.window.show_all()
-        gtk.main()
+        Gtk.main()
   
         
     def initMainWindow(self):
         '''init Main Window'''
-        window = gtk.Window(gtk.WINDOW_TOPLEVEL)
+        window = Gtk.Window(Gtk.WindowType.TOPLEVEL)
         # window.set_decorated(False)
-        window.set_position(gtk.WIN_POS_CENTER)
+        window.set_position(Gtk.WindowPosition.CENTER)
         window.set_title("Deepin Scrot")
         window.set_default_size(300, 517)
         window.set_resizable(False)
