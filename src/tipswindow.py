@@ -40,7 +40,7 @@ class tipWindow():
         self.paddingX = 10
         self.content = content
         
-        self.tipWindow = Gtk.Window(Gtk.WINDOW_TOPLEVEL)
+        self.tipWindow = Gtk.Window(Gtk.WindowType.TOPLEVEL)
         self.tipWindow.set_keep_above(True)
         self.tipWindow.set_size_request(-1, -1)
         self.tipWindow.set_decorated(False)
