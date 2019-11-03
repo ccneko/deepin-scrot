@@ -414,6 +414,7 @@ def drawTitlebar(widget, name):
     #                   appTheme.getDynamicPixbuf('%s_bg_middle.png' % name),
     #                   appTheme.getDynamicPixbuf('%s_bg_right.png' % name)))
 
+
 def drawTitlebarOnExpose(widget, event, bgLeftDPixbuf,
                          bgMiddleDPixbuf, bgRightDPixbuf):
     ''' draw titlebar'''
@@ -438,10 +439,10 @@ def drawTitlebarOnExpose(widget, event, bgLeftDPixbuf,
     drawPixbuf(cr, bgRightPixbuf, rOffsetX, rect.y)
 
     if widget.get_child() != None:
-        print('propagate_draw')
         widget.propagate_draw(widget.get_child(), event) # Procedure propagate_draw has been removed and will be replaced with Propagate_Draw
     
     return True
+
 
 def drawButton(widget, iconPrefix, scaleX=False):
     '''draw button '''
@@ -490,7 +491,6 @@ def buttonOnExpose(widget, event, scaleX, scaleY, normalDPixbuf, hoverDPixbuf, p
         imageHeight = widget.allocation.height
     else:
         imageHeight = image.get_height()
-        
     
     pixbuf = image.scale_simple(imageWidth, imageHeight, Gdk.InterpType.BILINEAR)
     

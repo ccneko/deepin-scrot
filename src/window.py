@@ -45,9 +45,9 @@ def findWindowByProperty(xlibWindow, atom=WM_STATE):
             if status:
                 child = children
             else:
-                child = findWindowByProperty(children, atom)
-        
+                child = findWindowByProperty(children, atom)        
         return child
+
 
 def getClientWindow(target):
     ''' Enumerate clientWindow '''
@@ -64,8 +64,7 @@ def getClientWindow(target):
 def filterWindow():
     ''' without other window'''
     windowList = []
-
-    
+  
     for xlibWindow in enumXlibWindow():
         if xlibWindow.get_property(WM_DESKTOP, WM_HINTS, 0, 0):
             windowList.append(xlibWindow)
@@ -73,30 +72,23 @@ def filterWindow():
              if findWindowByProperty(xlibWindow, WM_DESKTOP):
                  windowList.append(xlibWindow)
     
-
     return windowList
-             
-    
+  
 
 def getXlibPointerWindow():
     ''' grab pointer window '''
     return rootWindow.query_pointer().child
 
+
 def getXlibFocusWindow():
     ''' grab focus window'''
     return disp.get_input_focus().focus
 
-    
-def isFullScreen(xlibWindow):
-    '''whether is xlibWindow fullScreen '''
-
-        
 
 def getWindowCoord(xlibWindow):
     ''' covert xlibWindow's coord'''
     
     clientWindow = getClientWindow(xlibWindow)
-    
     
     if xlibWindow != clientWindow:
         x = xlibWindow.get_geometry().x + clientWindow.get_geometry().x
@@ -121,13 +113,13 @@ def getFocusWindowCoord():
 
 def enumXlibWindow():
     ''' enumerate child window of rootWindow'''
-             
     return rootWindow.query_tree().children
 
 
 def xlibWindowToGtkWindow(xlibWindow):
     ''' convert Xlib's window to Gtk's window '''
     return Gdk.window_foreign_new(xlibWindow.id)
+
 
 def getUsertimeWindow():
     '''Usertime Window  '''
@@ -137,7 +129,6 @@ def getUsertimeWindow():
        usertimeWindow[sequence_number] = eachWindow
     
     return sorted(usertimeWindow.iteritems(), key=lambda k: k[0], reverse=True)
-    
     
 
 def enumGtkWindow():
@@ -149,12 +140,14 @@ def enumGtkWindow():
         gtkWindowList.append(xlibWindowToGtkWindow(eachWindow))
     return gtkWindowList
 
+
 def getWindowTitle(xlibWindow):
     ''' get window title'''
     clientWindow = getClientWindow(xlibWindow)
     if clientWindow != xlibWindeow:
         return clientWindow.get_wm_name()
     return xlibWindow.get_wm_name()
+
 
 def convertCoord(x, y, width, height):
     ''' cut out overlop the screen'''
@@ -185,12 +178,8 @@ def convertCoord(x, y, width, height):
     if x > 0 and xWidth > screenWidth and y < 0:
         return (x, 0, width - (xWidth - screenWidth), yHeight) 
         
-    
-    
     return (x, y, width, height)
     
-    
-
 
 def getScrotWindowInfo():
     ''' return (x, y, width, height) '''
@@ -203,7 +192,6 @@ def getScrotWindowInfo():
         (x, y, width, height) = getWindowCoord(eachWindow)
         scrotWindowInfo.append(coordInfo(*convertCoord(x, y, width, height)))
     
-
     return scrotWindowInfo
 
 
@@ -217,7 +205,6 @@ def getScrotPixbuf(fullscreen=True):
         (x, y, width, height) = rootWindow.get_geometry() 
     
     pixbuf = GdkPixbuf.Pixbuf.new(GdkPixbuf.Colorspace.RGB, False, 8, width, height)
-    #pixbuf = Gdk.pixbuf_get_from_window(rootWindow, rootWindow.get_colormap(), x, y, 0, 0, width, height)
     pixbuf = Gdk.pixbuf_get_from_window(rootWindow, x, y, width, height)
     return pixbuf
 

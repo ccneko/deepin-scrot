@@ -50,7 +50,6 @@ class tipWindow():
         self.tipWindow.set_opacity(1)
         self.tipWindow.set_skip_taskbar_hint(True)
         self.tipWindow.set_skip_pager_hint(True)
-
         self.tipWindow.move(screenWidth - 250 , 34)
         self.tipExpose
         #self.tipWindow.connect('expose-event', self.tipExpose)
@@ -69,6 +68,7 @@ class tipWindow():
         self.tipWindow.show_all()
         
         Gtk.main()
+
     
     def tipExpose(self, widget, event, data=None):
         self.alpha -= self.delta
@@ -80,7 +80,6 @@ class tipWindow():
         cr.fill_preserve()
         cr.stroke()
 
-
         if widget.get_child() != None:
             widget.propagate_expose(widget.get_child(), event)
             
@@ -89,6 +88,7 @@ class tipWindow():
     def getAlpha(self):
         return self.alpha
         
+
     def timeoutHandler(self, widget):
         if self.getAlpha() <= 0:
             Gtk.main_quit()
@@ -134,6 +134,7 @@ class countdownWindow():
         
         Gtk.main()
     
+
     def tipExpose(self, widget, event, data=None):
         self.label.set_markup("<span foreground='#00AEFF' size='36000'>%d</span>" % (self.count))
         cr = widget.window.cairo_create()
@@ -143,11 +144,11 @@ class countdownWindow():
         cr.fill_preserve()
         cr.stroke()
 
-
         if widget.get_child() != None:
             widget.propagate_expose(widget.get_child(), event)
             
         return True
+
         
     def timeoutHandler(self, widget):
         if self.count == 1:
@@ -160,6 +161,7 @@ class countdownWindow():
         self.count -= 1
         widget.queue_draw()
         return True
+
         
 if __name__ == '__main__':
     ''' '''
