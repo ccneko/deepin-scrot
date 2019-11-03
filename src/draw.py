@@ -25,8 +25,6 @@ from theme import *
 from utils import *
 import sys
 from constant import DEFAULT_FONT
-from PIL import Image # cc: test
-from io import BytesIO # cc: test
 import cairo
 import gi
 gi.require_version('Gtk', '3.0')
@@ -41,7 +39,8 @@ def drawPixbuf(cr, pixbuf, x=0, y=0):
     if pixbuf != None:
         Gdk.cairo_set_source_pixbuf(cr, pixbuf, x, y)
         cr.paint()
-        
+
+
 def colorHexToCairo(color):
     """ 
     Convert a html (hex) RGB value to cairo color. 
@@ -57,6 +56,7 @@ def colorHexToCairo(color):
                     int(color[4:], 16)) 
     return colorRGBToCairo((r, g, b)) 
 
+
 def colorRGBToCairo(color): 
     """ 
     Convert a 8 bit RGB value to cairo color. 
@@ -67,6 +67,7 @@ def colorRGBToCairo(color):
     """ 
     return (color[0] / 255.0, color[1] / 255.0, color[2] / 255.0) 
 
+
 def drawSimpleButton(widget, img, helpText = None):
     '''Draw simple button.'''
     pixbuf = appTheme.getDynamicPixbuf(img + "_normal.png").getPixbuf()
@@ -76,6 +77,7 @@ def drawSimpleButton(widget, img, helpText = None):
     # simpleButtonSetBackground(widget, img)
     if helpText != None:
         setHelpTooltip(widget, helpText)
+
 
 def simpleButtonOnExpose(widget, event, img):
     '''Expose function to replace event box's image.'''
@@ -97,12 +99,14 @@ def simpleButtonOnExpose(widget, event, img):
 
     return True
 
+
 def drawSizeButton(widget, img, index, getIndex):
     '''Draw sizeButton'''
     pixbuf = appTheme.getDynamicPixbuf(img + ".png").getPixbuf()
     widget.set_size_request(pixbuf.get_width(), pixbuf.get_height())
     
     #widget.connect("expose-event", lambda w, e: SizeButtonOnExpose(w, e, img, index, getIndex))
+
 
 def SizeButtonOnExpose(widget, event, img, index, getIndex):
     '''Expose function to replace event box's image.'''
@@ -116,7 +120,6 @@ def SizeButtonOnExpose(widget, event, img, index, getIndex):
     elif widget.state == Gtk.StateType.ACTIVE:
         pixbuf = appTheme.getDynamicPixbuf(img + "_press.png").getPixbuf()
         
-    
     cr = widget.get_property('window').cairo_create()
     drawPixbuf(cr, pixbuf, 
                widget.allocation.x,
@@ -127,6 +130,7 @@ def SizeButtonOnExpose(widget, event, img, index, getIndex):
 
     return True
 
+
 def drawColorButton(widget, img, helpText = None):
     '''Draw simple button.'''
     pixbuf = appTheme.getDynamicPixbuf(img + ".png").getPixbuf()
@@ -136,6 +140,7 @@ def drawColorButton(widget, img, helpText = None):
     #widget.connect("expose-event", lambda w, e: simpleColorOnExpose(w, e, img))
     if helpText != None:
         setHelpTooltip(widget, helpText)
+
 
 def simpleColorOnExpose(widget, event, img):
     '''Expose function to replace event box's image.'''
@@ -156,6 +161,7 @@ def simpleColorOnExpose(widget, event, img):
 
     return True
 
+
 def drawSeparator(widget, img):
     '''draw separator'''
     pixbuf = appTheme.getDynamicPixbuf(img + ".png").getPixbuf()
@@ -164,17 +170,18 @@ def drawSeparator(widget, img):
     # simpleButtonSetBackground(widget, img)
     #widget.connect("expose-event", lambda w, e: SeparatorOnExpose(w, e, img))
 
+
 def SeparatorOnExpose(widget, event, img):
     '''Expose function to replace event box's image.'''
     pixbuf = appTheme.getDynamicPixbuf(img + ".png").getPixbuf()
 
-    
     cr = widget.get_property('window').cairo_create()
     drawPixbuf(cr, pixbuf, 
                widget.allocation.x,
                widget.allocation.y)
 
     return True
+
 
 def drawEllipse(cr, ex, ey, ew, eh, color, size):
     '''Draw ellipse'''
@@ -232,22 +239,15 @@ def drawArrow(cr, sxsy, exey, color, size):
     cr.line_to(x2, y2)
     cr.fill()
 
+
 def updateShape(widget, allocation, radius):
     '''Update shape.'''
     if allocation.width > 0 and allocation.height > 0:
         # Init.
-        win = Gdk.get_default_root_window() # cc: test 
+        win = Gdk.get_default_root_window()
         w, h = allocation.width, allocation.height
         bitmap = Gdk.pixbuf_get_from_window(win, 0, 0, w, h)
-        # https://stackoverflow.com/questions/10270080/how-to-draw-a-gdkpixbuf-using-gtk3-and-pygobject/10547095
-        # https://www.crifan.com/python_image_valueerror_not_enough_image_data/
-        # https://stackoverflow.com/questions/54406289/not-enough-image-data-error-when-converting-cv2-numpy-array-into-rgb-image
-        #pil_image = Image.open((w, h), BytesIO(bitmap.get_pixels()))
-        #pil_image = Image.frombytes('RGBA', (w, h), BytesIO(bitmap.get_pixels()).read())
-        #byte_array = array.array('B', pil_image.tostring())
-        #print(type(bitmap.get_pixels()))
         byte_array = bytearray(bitmap.get_pixels())
-        #print(type(byte_array))
         cr = cairo.Context(cairo.ImageSurface(cairo.FORMAT_ARGB32, w, h))
         
         # Clear the bitmap
@@ -260,8 +260,7 @@ def updateShape(widget, allocation, radius):
         cr.set_operator(cairo.OPERATOR_SOURCE)
         drawRoundRectangle(cr, 0, 0, w, h, radius)
         cr.fill()
-        
-        # widget.shape_combine_mask(bitmap, 0, 0) # Shape_Combine_Mask, Input_Shape_Combine_Mask and Reset_Shapes have been removed without replacements.
+    
 
 def drawRoundRectangle(cr, x, y, width, height, r):
     '''Draw round rectangle.'''
@@ -294,6 +293,7 @@ def exposeBackground(widget, event, dPixbuf):
 
     return True
 
+
 def drawRoundTextRectangle(cr, x, y, width, height, r, Text, alpha=0.8):
     ''' draw Round Text Rectangle''' 
     cr.set_source_rgba(0.14, 0.13, 0.15, alpha)
@@ -315,7 +315,6 @@ def drawRoundTextRectangle(cr, x, y, width, height, r, Text, alpha=0.8):
     cr.fill()
         
     drawFont(cr, Text, 14.0, "#FFFFFF", x + width / 12.0, y + height / 1.5)
-
     
 
 def drawFont(cr, content, fontSize, fontColor, x, y):
@@ -388,11 +387,11 @@ def drawMagnifier(cr, widget, x, y, sizeContent, tipContent = "", rgbContent = "
     cr.line_to(x + offsetX + pixbufWidth / 2, y + pixbufHeight + offsetY)
     cr.stroke()
     
-    
     drawFont(cr, sizeContent, 3.0, "#FFFFFF", x + offsetX, y + offsetY + pixbufHeight + 4)
     drawFont(cr, rgbContent, 3.0, "#FFFFFF", x + offsetX, y + offsetY + pixbufHeight + 7.5)
     drawFont(cr, tipContent, 3.0, "#FFFFFF", x + offsetX, y + offsetY + pixbufHeight + 11)
     cr.restore()
+
 
 def drawAlphaRectangle(cr, x, y, width, height):
     ''' draw alpha Rectangle '''
@@ -402,7 +401,8 @@ def drawAlphaRectangle(cr, x, y, width, height):
     #cr.stroke()
     cr.set_source_rgba(0, 0.7, 1.0, 0.4)
     cr.fill()
-    
+
+
 def drawTitlebar(widget, name):
     ''' draw title bar '''
     widget.set_size_request(-1,
@@ -443,7 +443,6 @@ def drawTitlebarOnExpose(widget, event, bgLeftDPixbuf,
     
     return True
 
-
 def drawButton(widget, iconPrefix, scaleX=False):
     '''draw button '''
     buttonSetBackground(widget, scaleX, False,
@@ -451,6 +450,7 @@ def drawButton(widget, iconPrefix, scaleX=False):
                         appTheme.getDynamicPixbuf("%s_hover.png" % iconPrefix),
                         appTheme.getDynamicPixbuf("%s_press.png" % iconPrefix)
                         )
+
 
 def buttonSetBackground(widget, scaleX, scaleY, normalDPixbuf, hoverDPixbuf, pressDPixbuf):
     ''' set event box's background. '''
@@ -470,6 +470,7 @@ def buttonSetBackground(widget, scaleX, scaleY, normalDPixbuf, hoverDPixbuf, pre
     #        w, e,
     #        scaleX, scaleY,
     #        normalDPixbuf, hoverDPixbuf, pressDPixbuf))
+
 
 def buttonOnExpose(widget, event, scaleX, scaleY, normalDPixbuf, hoverDPixbuf, pressDPixbuf):
     ''' Expose function to replace event box's image. '''
@@ -499,7 +500,5 @@ def buttonOnExpose(widget, event, scaleX, scaleY, normalDPixbuf, hoverDPixbuf, p
     if widget.get_child() != None:
         widget.propagate_draw(widget.get_child(), event)
     
-    return True 
-
-    
+    return True
     

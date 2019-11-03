@@ -55,7 +55,7 @@ def openFileDialog(fullscreen=True, filetype='png'):
        
         
 
-    optionMenu = Gtk.OptionMenu()
+    optionMenu = Gtk.MenuBar()
     optionMenu.set_size_request(155, -1)
     menu = Gtk.Menu()
     menu.set_size_request(155, -1)
@@ -75,19 +75,19 @@ def openFileDialog(fullscreen=True, filetype='png'):
     menu.append(pngItem)
     menu.append(jpgItem)
     menu.append(bmpItem)
-    optionMenu.set_menu(menu)
+    #optionMenu.set_menu(menu)
     
     
     hbox = Gtk.HBox()
-    hbox.pack_end(optionMenu, False, False)
-    dialog.vbox.pack_start(hbox, False, False)
+    hbox.pack_end(optionMenu, expand=False, fill=False, padding=0)
+    dialog.vbox.pack_start(hbox, expand=False, fill=False, padding=0)
     hbox.show_all()                          
             
     response = dialog.run()
         
     if response == Gtk.ResponseType.ACCEPT:
         filename = dialog.get_filename()
-        pixbuf.save(filename, filetype)
+        pixbuf.savev(filename, filetype, ["quality"], ["100"]) # to allow custom quality later
         print("Save snapshot to %s" % (filename))
     elif response == Gtk.ResponseType.REJECT:
         print('Closed, no files selected')
@@ -95,7 +95,7 @@ def openFileDialog(fullscreen=True, filetype='png'):
 
 def setSaveFiletype(widget, filetype):
     widget.set_current_name("%s%s.%s" % (DEFAULT_FILENAME, getFormatTime(), filetype))
-    saveFiletype =filetype
+    saveFiletype = filetype
        
 
 def processArguments():
@@ -108,12 +108,9 @@ def processArguments():
     parser.add_argument("-v", "--version", action='version', version='%(prog) 2.0')
     
     args = parser.parse_args()
-    #print parser.parse_args()
-    if args.fullscreen and args.window:
-        parser.error("options -f and -w are mutually exclusive")
-    elif args.fullscreen:
+    if args.fullscreen:
         if args.delay:
-            countdownWindow(args.delay)
+            countdownWindow(args.delay) # to fix: timeout before delay (tipswindow.py: glib.timeout_add(1000, ...))
             openFileDialog()
         else:
             openFileDialog()
