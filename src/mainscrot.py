@@ -1103,9 +1103,9 @@ class MainScrot:
         # Get snapshot.
         pixbuf = GdkPixbuf.Pixbuf.new(GdkPixbuf.Colorspace.RGB, False, 8, int(self.rectWidth), int(self.rectHeight))
         pixbuf = Gdk.pixbuf_get_from_window(
-            self.window.get_window(), self.window.get_window().get_colormap(),
+            self.window.get_window(), #self.window.get_window().get_colormap(),
             self.x, self.y,
-            0, 0,
+            #0, 0,
             int(self.rectWidth), int(self.rectHeight))
         
         # Save snapshot.
@@ -1117,7 +1117,7 @@ class MainScrot:
             tipContent = __("Tip save to clipboard")
         else:
             # Otherwise save to local file.
-            pixbuf.save(filename, filetype)
+            pixbuf.savev(filename, filetype, ["quality"], ["100"]) # to allow custom quality later
             tipContent = __("Tip save to file")
             
         
