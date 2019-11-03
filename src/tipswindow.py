@@ -45,7 +45,7 @@ class tipWindow():
         self.tipWindow.set_size_request(-1, -1)
         self.tipWindow.set_decorated(False)
         self.tipWindow.set_accept_focus(False)
-        self.tipWindow.modify_fg(Gtk.STATE_NORMAL, Gdk.color_parse("black"))
+        self.tipWindow.modify_fg(Gtk.StateType.NORMAL, Gdk.color_parse("black"))
         self.tipWindow.set_icon_from_file("../theme/logo/deepin-scrot.ico")
         self.tipWindow.set_opacity(1)
         self.tipWindow.set_skip_taskbar_hint(True)
